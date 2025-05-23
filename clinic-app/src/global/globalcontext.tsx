@@ -1,32 +1,34 @@
-// just a basic setup of the global context, replace table with whatever we need stuff for
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+// globalcontext.tsx
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import uuid from 'react-native-uuid';
-/*
-interface Table {
-    id: string;
-}
-*/
 
 interface Account {
     id: string;
     username: string;
     password: string;
 }
+
+interface Reservation {
+    id: string;
+    name: string;
+    age: string;
+    email: string;
+    contact: string;
+    reason: string;
+    date: string;
+    time: string;
+    status: 'pending' | 'approved' | 'rejected' | 'cancelled';
+}
+
 interface GlobalContextProps {
-    /*
-    tables: Table[];
-    savedTables: Table[];
-    saveTable: (table: Table) => void;
-    removeTable: (tableId: string) => void;
-    */
     accounts: Account[];
     storedAccounts: Account[];
     addAccount: (username: string, password: string) => void;
-    storeAccount: (account: Account) => void;   // we're just storing a function thats why it says () => void, with void being its data type honestly dont think too much about it
-    removeAccount: (accountId: string) => void;   // also the thing in () is just the parameter u put inside the global provider, ull find it similar
-    usernameExists: (username: string) => boolean; // returns true or false
+    storeAccount: (account: Account) => void;
+    removeAccount: (accountId: string) => void;
+    usernameExists: (username: string) => boolean;
 
-    // Added for reservations
+    // Reservation context
     reservations: Reservation[];
     addReservation: (reservation: Omit<Reservation, 'id' | 'status'>) => void;
     approveReservation: (id: string) => void;
@@ -35,63 +37,36 @@ interface GlobalContextProps {
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
+
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-    /* placeholder format for adding new stuff
-    const [tables, setTable] = useState<Table[]>([]);
-    const [savedTables, setSavedTables] = useState<Table[]>([]);
-    const saveTable = (table: Table) => {
-        setSavedTables((previousTables) => {
-            if (previousTables.some((savedTable) => savedTable.id === table.id)) return previousTables;
-            return [...previousTables, table];
-        });
-    };
-
-    const removeTable = (tableId: string) => {
-        setSavedTables((prevJobs) => prevJobs.filter((table) => table.id !== tableId));
-    };
-    */
-
-    // LOGIN
+    // Accounts
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [storedAccounts, setStoredAccounts] = useState<Account[]>([]);
 
     const addAccount = (username: string, password: string) => {
         const newAccount: Account = {
             id: uuid.v4() as string,
-            username: username,
-            password: password,
+            username,
+            password,
         };
-        setAccounts((prevAccounts) => [...prevAccounts, newAccount]);
+        setAccounts((prev) => [...prev, newAccount]);
     };
 
     const storeAccount = (account: Account) => {
-        setStoredAccounts((previousAccounts) => {
-            if (previousAccounts.some((savedAccount) => savedAccount.id === account.id)) return previousAccounts;
-            return [...previousAccounts, account];
-        });
+        setStoredAccounts((prev) =>
+            prev.some((a) => a.id === account.id) ? prev : [...prev, account]
+        );
     };
 
     const removeAccount = (accountId: string) => {
-        setStoredAccounts((prevAccounts) => prevAccounts.filter((account) => account.id !== accountId));
+        setStoredAccounts((prev) => prev.filter((a) => a.id !== accountId));
     };
 
-    const usernameExists = (username: string): boolean => {
-        return accounts.some((account) => account.username === username);
+    const usernameExists = (username: string) => {
+        return accounts.some((a) => a.username === username);
     };
 
-    // RESERVATIONS
-        interface Reservation {
-        id: string;
-        name: string;
-        age: string;
-        email: string;
-        contact: string;
-        reason: string;
-        date: string;
-        time: string;
-        status: 'pending' | 'approved' | 'rejected' | 'cancelled';
-        }
-
+    // Reservations
     const [reservations, setReservations] = useState<Reservation[]>([]);
 
     const addReservation = (reservation: Omit<Reservation, 'id' | 'status'>) => {
@@ -114,21 +89,21 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const cancelReservation = (id: string) => updateReservationStatus(id, 'cancelled');
 
     return (
-        <GlobalContext.Provider value={{
-            accounts,
-            storedAccounts,
-            addAccount,
-            storeAccount,
-            removeAccount,
-            usernameExists,
-
-            // Reservations
-            reservations,
-            addReservation,
-            approveReservation,
-            rejectReservation,
-            cancelReservation,
-        }}>
+        <GlobalContext.Provider
+            value={{
+                accounts,
+                storedAccounts,
+                addAccount,
+                storeAccount,
+                removeAccount,
+                usernameExists,
+                reservations,
+                addReservation,
+                approveReservation,
+                rejectReservation,
+                cancelReservation,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );

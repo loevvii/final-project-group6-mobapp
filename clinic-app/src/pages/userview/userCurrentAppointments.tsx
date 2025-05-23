@@ -14,7 +14,7 @@ const UserCurrentAppointments: React.FC<Props> = ({ navigation }) => {
       </Text>
 
       <FlatList
-        data={reservations.filter(r => r.accId === user!.id)}
+        data={reservations.filter(r => r.accId === user!.id && r.status != 'completed')}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.appointmentContainer}>

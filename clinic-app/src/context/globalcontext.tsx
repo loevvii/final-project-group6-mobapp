@@ -22,6 +22,13 @@ interface Reservation {
     status: 'pending' | 'approved' | 'rejected' | 'cancelled' | 'completed' | 'missed';
 }
 
+interface Availability {
+    id: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+}
+
 interface GlobalContextProps {
     // User context
     user: Account | null;
@@ -31,7 +38,7 @@ interface GlobalContextProps {
     // Account context
     accounts: Account[];
     storedAccounts: Account[];
-    addAccount: (username: string, email:string, password: string) => void;
+    addAccount: (username: string, email: string, password: string) => void;
     storeAccount: (account: Account) => void;
     removeAccount: (accountId: string) => void;
     usernameExists: (username: string) => boolean;
@@ -43,6 +50,11 @@ interface GlobalContextProps {
     approveReservation: (id: string) => void;
     rejectReservation: (id: string) => void;
     cancelReservation: (id: string) => void;
+
+    // Availability context
+    availability: Availability[];
+    addAvailability: (date: string, startTime: string, endTime: string) => void;
+    removeAvailability: (id: string) => void;
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
@@ -73,8 +85,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         const user = accounts.find((a) => (a.email === "user@gmail.com" || a.username == "user@gmail.com") && a.password === "user123");
         login(user);
         */
-    });    
-    
+    });
+
     const storeAccount = (account: Account) => {
         setStoredAccounts((prev) =>
             prev.some((a) => a.id === account.id) ? prev : [...prev, account]
@@ -116,6 +128,22 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const rejectReservation = (id: string) => updateReservationStatus(id, 'rejected');
     const cancelReservation = (id: string) => updateReservationStatus(id, 'cancelled');
 
+    // Availability
+    const [availability, setAvailability] = useState<Availability[]>([]);
+
+    const addAvailability = (date: string, startTime: string, endTime: string) => {
+        const newAvailability: Availability = {
+            id: uuid.v4() as string,
+            date,
+            startTime,
+            endTime,
+        };
+        setAvailability((prev) => [...prev, newAvailability]);
+    };
+
+    const removeAvailability = (id: string) => {
+        setAvailability((prev) => prev.filter((a) => a.id !== id));
+    };
     return (
         <GlobalContext.Provider
             value={{
@@ -134,6 +162,9 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 approveReservation,
                 rejectReservation,
                 cancelReservation,
+                availability,
+                addAvailability,
+                removeAvailability,
             }}
         >
             {children}

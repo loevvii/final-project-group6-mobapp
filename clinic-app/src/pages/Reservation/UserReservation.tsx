@@ -33,9 +33,9 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   const [contact, setContact] = useState('');
   const styles = getGlobalStyles(); // NEW: it just grabs global styles its. yeah.  y ep
   const { selectedDate } = route.params; // get date sent
+  const { user, addReservation, reservations } = useGlobalContext();  // added user from global context
 
-
-  const { addReservation, reservations } = useGlobalContext();
+  if (!user) return;
 
   const formattedDate = format(date, 'yyyy-MM-dd');
 
@@ -51,6 +51,7 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
 
     const newReservation = {
       id: uuid.v4(),
+      accId: 'string',
       name,
       age,
       reason,
@@ -61,7 +62,7 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
       status: 'pending'
     };
 
-    addReservation(newReservation);
+    addReservation(newReservation, user.id);
     Alert.alert('Reservation submitted!');
 
     setSelectedSlot('');

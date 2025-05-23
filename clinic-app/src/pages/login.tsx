@@ -1,10 +1,12 @@
+// man i rmeember when this had barely anything and was a lot cleaner, it still is but wow how times change
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useGlobalContext } from '../context/globalcontext';
 import { getGlobalStyles } from '../styles/globalstyles';
 import { Props } from '../navigator/props';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { sendNotification, registerForPushNotificationsAsync } from '../utils/notifications';
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const { accounts, addAccount, storeAccount, usernameExists, emailExists, login } = useGlobalContext();
@@ -19,11 +21,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       hasAddedDefault.current = true;
       console.log("added doctor");
     }
+    registerForPushNotificationsAsync();
   }, []);
-
-  useEffect(() => {
-    console.log("Current accounts:", accounts);
-  }, [accounts]);
 
   const getValidationSchema = (isRegistering: boolean) =>
     Yup.object().shape({
@@ -65,7 +64,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     navigation.reset({ index: 0, routes: [{ name: redirectName }] });
   };
 
-  const handleRegister = (username: string, email: string, password: string) => {
+  const handleRegister = async (username: string, email: string, password: string) => {
     if (emailExists(email)) {
       Alert.alert('Registration Failed', 'That email is already registered!');
       return;
@@ -78,6 +77,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const newUser = accounts.find((a) => a.username === username && a.email === email && a.password === password);
     if (newUser) storeAccount(newUser);
     Alert.alert('Registration Successful');
+    await sendNotification("Medspot Successfully Registered", "Your Medspot account " + username + " has successfully been registered! You may now use this account to login Medspot at any time.")
     setIsRegistering(false);
   };
 
@@ -86,13 +86,20 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.header}>
         {isRegistering ? 'Creating an Account' : 'Welcome to Medspot!'}
       </Text>
-      <Text style={styles.subheader}>{isRegistering ? 'Please enter the following details to create your own account.' : 'Medspot, your very own clinic reservation app.'}</Text>
+      <Text style={styles.subheader}>
+        {isRegistering
+          ? 'Please enter the following details to create your own account.'
+          : 'Medspot, your very own clinic reservation app.'}
+      </Text>
+
       <Formik
         initialValues={{ emailOrUsername: '', email: '', username: '', password: '', confirmPassword: '' }}
         validationSchema={getValidationSchema(isRegistering)}
         onSubmit={(values, { resetForm }) => {
           const { emailOrUsername, email, username, password } = values;
-          isRegistering ? handleRegister(username, email, password) : handleLogin(emailOrUsername, password);
+          isRegistering
+            ? handleRegister(username, email, password)
+            : handleLogin(emailOrUsername, password);
           resetForm();
         }}
       >
@@ -100,7 +107,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <View>
             {!isRegistering ? (
               <>
-                <Text>Email or Username</Text>
+                <Text style={styles.label}>Email or Username</Text>
                 <TextInput
                   placeholder="Email or Username"
                   onChangeText={handleChange('emailOrUsername')}
@@ -109,12 +116,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.formInput}
                 />
                 {touched.emailOrUsername && errors.emailOrUsername && (
-                  <Text style={{ color: 'red' }}>{errors.emailOrUsername}</Text>
+                  <Text style={styles.errorText}>{errors.emailOrUsername}</Text>
                 )}
               </>
             ) : (
               <>
-                <Text>Email</Text>
+                <Text style={styles.label}>Email</Text>
                 <TextInput
                   placeholder="Email"
                   onChangeText={handleChange('email')}
@@ -122,9 +129,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   autoCapitalize="none"
                   style={styles.formInput}
                 />
-                {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+                {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
-                <Text>Username</Text>
+                <Text style={styles.label}>Username</Text>
                 <TextInput
                   placeholder="Username"
                   onChangeText={handleChange('username')}
@@ -133,12 +140,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.formInput}
                 />
                 {touched.username && errors.username && (
-                  <Text style={{ color: 'red' }}>{errors.username}</Text>
+                  <Text style={styles.errorText}>{errors.username}</Text>
                 )}
               </>
             )}
 
-            <Text>Password</Text>
+            <Text style={styles.label}>Password</Text>
             <TextInput
               placeholder="Password"
               secureTextEntry
@@ -147,12 +154,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               style={styles.formInput}
             />
             {touched.password && errors.password && (
-              <Text style={{ color: 'red' }}>{errors.password}</Text>
+              <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
             {isRegistering && (
               <>
-                <Text>Confirm Password</Text>
+                <Text style={styles.label}>Confirm Password</Text>
                 <TextInput
                   placeholder="Confirm Password"
                   secureTextEntry
@@ -161,7 +168,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   style={styles.formInput}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>
+                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
               </>
             )}
@@ -173,7 +180,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)} style={{ marginTop: 10 }}>
-              <Text style={{ textAlign: 'center', color: '#1E60F0' }}>
+              <Text style={[styles.label, { textAlign: 'center', color: '#1E60F0' }]}>
                 {isRegistering ? 'Already have an account? Login' : 'New here? Register'}
               </Text>
             </TouchableOpacity>

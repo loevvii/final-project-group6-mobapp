@@ -47,7 +47,9 @@ interface GlobalContextProps {
     // Reservation context
     reservations: Reservation[];
     addReservation: (reservation: Omit<Reservation, 'id' | 'status'>, accountId: string) => void;
+    updateReservation: (updatedReservation: Reservation) => void;
     approveReservation: (id: string) => void;
+    completeReservation: (id: string) => void;
     rejectReservation: (id: string) => void;
     cancelReservation: (id: string) => void;
 
@@ -118,7 +120,14 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const approveReservation = (id: string) => updateReservationStatus(id, 'approved');
     const rejectReservation = (id: string) => updateReservationStatus(id, 'rejected');
     const cancelReservation = (id: string) => updateReservationStatus(id, 'cancelled');
-
+        const completeReservation = (id: string) => updateReservationStatus(id, 'completed');
+    const updateReservation = (updatedReservation: Reservation) => {
+        setReservations((prev) =>
+            prev.map((res) =>
+                res.id === updatedReservation.id ? { ...res, ...updatedReservation } : res
+            )
+        );
+    };
     // Availability
     const [availability, setAvailability] = useState<Availability[]>([]);
 
@@ -136,7 +145,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setAvailability((prev) => prev.filter((a) => a.id !== id));
     };
     return (
-        <GlobalContext.Provider
+        <GlobalContext.Provider // man whered all the global context go?  my global context shaped belly:
             value={{
                 user,
                 login,
@@ -150,8 +159,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 emailExists,
                 reservations,
                 addReservation,
+                updateReservation,
                 approveReservation,
                 rejectReservation,
+                completeReservation,
                 cancelReservation,
                 availability,
                 addAvailability,

@@ -25,6 +25,7 @@
     "react-native": "0.79.2",
     "react-native-calendars": "^1.1312.0",
     "react-native-uuid": "^2.0.3",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.20.0",
     "react-navigation": "^5.0.0",
     "yup": "^1.6.1"

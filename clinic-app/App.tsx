@@ -5,7 +5,7 @@ import { GlobalProvider } from './src/context/globalcontext';
 export default function App() {
   return (
     <GlobalProvider>
-      <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight, backgroundColor: "#fff" }}>
         <AppNavigator />
       </SafeAreaView>
     </GlobalProvider>

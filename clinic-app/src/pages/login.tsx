@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import { useGlobalContext } from '../context/globalcontext';
+import { getGlobalStyles } from '../styles/globalstyles';
 import { Props } from '../navigator/props';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +10,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const { accounts, addAccount, storeAccount, usernameExists, emailExists, login } = useGlobalContext();
   const [isRegistering, setIsRegistering] = useState(false);
   const hasAddedDefault = useRef(false);
+
+  const styles = getGlobalStyles();
 
   useEffect(() => {
     if (!hasAddedDefault.current && !accounts.find(a => a.username === 'Doctor')) {
@@ -21,7 +24,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     console.log("Current accounts:", accounts);
   }, [accounts]);
-  
+
   const getValidationSchema = (isRegistering: boolean) =>
     Yup.object().shape({
       email: isRegistering
@@ -45,32 +48,24 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     });
 
   const handleLogin = (emailOrUsername: string, password: string) => {
-    console.log('running');
-    console.log('Current accounts:', accounts);
     var redirectName = 'UserHome';
     if (emailOrUsername === "Doctor" || emailOrUsername === "doctor@gmail.com") {
       redirectName = 'DoctorHome';
-      console.log('doc');
     }
     const user = accounts.find(
       (a) => (a.email === emailOrUsername || a.username === emailOrUsername) && a.password === password
     );
     if (!user) {
       Alert.alert('Login Failed', 'Incorrect email or password.');
-      console.log('fail');
-
       return;
     }
 
     login(user);
-    console.log('success');
-
     Alert.alert('Success', 'You are logged in!');
     navigation.reset({ index: 0, routes: [{ name: redirectName }] });
   };
 
   const handleRegister = (username: string, email: string, password: string) => {
-    console.log('registering');
     if (emailExists(email)) {
       Alert.alert('Registration Failed', 'That email is already registered!');
       return;
@@ -87,8 +82,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
+    <View style={styles.container}>
+      <Text style={styles.header}>
         {isRegistering ? 'Register' : 'Login'}
       </Text>
       <Formik
@@ -110,7 +105,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   onChangeText={handleChange('emailOrUsername')}
                   value={values.emailOrUsername}
                   autoCapitalize="none"
-                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                  style={styles.formInput}
                 />
                 {touched.emailOrUsername && errors.emailOrUsername && (
                   <Text style={{ color: 'red' }}>{errors.emailOrUsername}</Text>
@@ -124,7 +119,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   onChangeText={handleChange('email')}
                   value={values.email}
                   autoCapitalize="none"
-                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                  style={styles.formInput}
                 />
                 {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
 
@@ -134,7 +129,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   onChangeText={handleChange('username')}
                   value={values.username}
                   autoCapitalize="none"
-                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                  style={styles.formInput}
                 />
                 {touched.username && errors.username && (
                   <Text style={{ color: 'red' }}>{errors.username}</Text>
@@ -148,7 +143,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               secureTextEntry
               onChangeText={handleChange('password')}
               value={values.password}
-              style={{ borderBottomWidth: 1, marginBottom: 10 }}
+              style={styles.formInput}
             />
             {touched.password && errors.password && (
               <Text style={{ color: 'red' }}>{errors.password}</Text>
@@ -162,7 +157,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                   secureTextEntry
                   onChangeText={handleChange('confirmPassword')}
                   value={values.confirmPassword}
-                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                  style={styles.formInput}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>
@@ -170,14 +165,14 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               </>
             )}
 
-            <TouchableOpacity onPress={() => handleSubmit()} style={{ marginVertical: 10 }}>
-              <Text style={{ fontSize: 16, textAlign: 'center' }}>
+            <TouchableOpacity onPress={() => handleSubmit()} style={styles.formButton}>
+              <Text style={styles.buttonText}>
                 {isRegistering ? 'Register' : 'Login'}
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
-              <Text style={{ textAlign: 'center', color: 'blue' }}>
+            <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)} style={{ marginTop: 10 }}>
+              <Text style={{ textAlign: 'center', color: '#1E60F0' }}>
                 {isRegistering ? 'Already have an account? Login' : 'New here? Register'}
               </Text>
             </TouchableOpacity>

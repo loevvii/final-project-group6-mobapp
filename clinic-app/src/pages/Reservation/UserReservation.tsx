@@ -12,7 +12,6 @@ import {
 import { useGlobalContext } from '../../context/globalcontext';
 import { getGlobalStyles } from '../../styles/globalstyles';
 import uuid from 'react-native-uuid';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { Props } from '../../navigator/props';
 
@@ -28,22 +27,16 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [reason, setReason] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
   const { user, addReservation, reservations } = useGlobalContext();
 
   if (!user) return null;
 
-  // Use selectedDate from route param if available, else fallback to local date state
-  const routeDate = route.params?.date;
-  const effectiveDate = routeDate ? new Date(routeDate) : date;
-  const formattedDate = format(effectiveDate, 'yyyy-MM-dd');
-
+  const routeDate = route.params.selectedDate;
   // Normalize taken slots to lowercase trimmed for matching
   const takenSlots = reservations
-    .filter((r) => r.status === 'approved' && r.date === formattedDate)
+    .filter((r) => r.status === 'approved' && r.date === routeDate)
     .map((r) => r.time.trim().toLowerCase());
 
   const handleSubmit = () => {
@@ -60,7 +53,7 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
       reason,
       email,
       contact,
-      date: formattedDate,
+      date: routeDate,
       time: selectedSlot,
       status: 'pending',
     };
@@ -77,10 +70,8 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.header}>Book an Appointment</Text>
-
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.header}>Booking for {routeDate}</Text>
         <Text style={styles.subheader}>Patient Information</Text>
 
         <TextInput
@@ -118,26 +109,7 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
           onChangeText={setReason}
           multiline
         />
-
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          style={styles.formButton}
-        >
-          <Text style={styles.buttonText}>Select Date: {formattedDate}</Text>
-        </TouchableOpacity>
-
-        {showDatePicker && (
-          <DateTimePicker
-            value={effectiveDate}
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              if (selectedDate) setDate(selectedDate);
-            }}
-          />
-        )}
-
+        
         {Object.entries(timeSlots).map(([period, slots]) => (
           <View key={period} style={styles.card}>
             <Text style={styles.subheader}>{period} Slots</Text>
@@ -177,7 +149,6 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
           <Text style={styles.buttonText}>Confirm Appointment</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
   );
 };
 

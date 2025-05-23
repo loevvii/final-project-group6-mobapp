@@ -1,16 +1,58 @@
-<<<<<<< HEAD
-import { StyleSheet } from 'react-native';
-
-=======
 import { SafeAreaView, StyleSheet } from 'react-native';
->>>>>>> ad02449601edfe50fd0b6c9c6b920812542d182b
 export const getGlobalStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#F5F0FA', // soft lavender background
+=======
+import { StyleSheet } from 'react-native';
+
+export const getGlobalStyles = () =>
+  StyleSheet.create({
+    squareButtonGroup: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      marginHorizontal: 10,
+    },
+
+    squareButton: {
+      width: '48%',
+      aspectRatio: 1,
+      backgroundColor: '#9D7AC4',
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 12,
+      padding: 10,
+    },
+
+    squareButtonContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    squareButtonIcon: {
+      marginBottom: 6,
+    },
+
+    squareButtonText: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+
+    login: {
+      justifyContent: 'center',
+    },
+
+    container: {
+      backgroundColor: '#fff', // soft lavender background
       paddingHorizontal: 20,
       paddingTop: 20,
+      flexGrow: 1, 
+      paddingBottom: 20
     },
     tabContainer: {
       flexDirection: 'row',
@@ -56,6 +98,23 @@ export const getGlobalStyles = () =>
       paddingVertical: 14,
       borderRadius: 10,
       alignItems: 'center',
+      paddingVertical: 18,
+      borderRadius: 10,
+      alignItems: 'center',
+      flexDirection: 'row',
+      paddingHorizontal: 16,
+    },
+    secondaryButton: {
+      backgroundColor: '#BFA2DB',
+      paddingVertical: 18,
+      borderRadius: 10,
+      alignItems: 'center',
+      flexDirection: 'row',
+      paddingHorizontal: 16,
+    },
+    disabled: {
+      backgroundColor: '#ddd',
+      opacity: 0.6,
     },
     disabledButton: {
       backgroundColor: '#ddd',
@@ -67,7 +126,7 @@ export const getGlobalStyles = () =>
     buttonText: {
       color: '#fff',
       fontWeight: '600',
-      fontSize: 16,
+      fontSize: 18,
     },
 
     card: {
@@ -104,9 +163,12 @@ export const getGlobalStyles = () =>
       color: '#B57EDC', // soft purple
     },
     buttonRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
       marginTop: 12,
+      // Add these flexbox properties:
+  flexDirection: 'row',   // layout items horizontally
+  flexWrap: 'wrap',       // allow items to wrap to next line
+  justifyContent: 'flex-start',  // align items at start of each line
+  alignItems: 'flex-start',      // align items at top of each line
     },
     button: {
       flex: 1,
@@ -134,11 +196,27 @@ export const getGlobalStyles = () =>
       paddingTop: 20,
    },
 
+    },
+    headerGroup: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',  // pushes children to opposite ends
+      alignItems: 'center',             // vertically center texts if needed
+      paddingHorizontal: 16,            // optional padding
+      paddingVertical: 8,
+    },
+    headerRight: {
+      color: '#fff',
+      backgroundColor: '#9D7AC4',
+      padding: 6,
+      borderRadius: 12,
+    },
     header: {
       fontSize: 22,
       fontWeight: 'bold',
       color: '#9D7AC4',
       marginBottom: 10,
+      marginTop: 10,
+      textAlign: 'center',
     },
     subheader: {
       fontSize: 18,

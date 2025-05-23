@@ -82,10 +82,11 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.login]}>
       <Text style={styles.header}>
-        {isRegistering ? 'Register' : 'Login'}
+        {isRegistering ? 'Creating an Account' : 'Welcome to Medspot!'}
       </Text>
+      <Text style={styles.subheader}>{isRegistering ? 'Please enter the following details to create your own account.' : 'Medspot, your very own clinic reservation app.'}</Text>
       <Formik
         initialValues={{ emailOrUsername: '', email: '', username: '', password: '', confirmPassword: '' }}
         validationSchema={getValidationSchema(isRegistering)}

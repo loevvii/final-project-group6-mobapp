@@ -174,23 +174,29 @@ export const getGlobalStyles = () =>
       borderRadius: 8,
       borderWidth: 1,
       borderColor: '#D0D0D0',
-      backgroundColor: '#fff',
+      backgroundColor: '#fff',  // White by default (no blue background)
       marginRight: 10,
       marginBottom: 10,
     },
     selectedSlot: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#1E60F0',  // Blue only when selected
       borderColor: '#1E60F0',
     },
     slotText: {
       fontSize: 14,
-      color: '#333',
+      color: '#333',  // Dark text by default
     },
     selectedSlotText: {
-      color: '#fff',
+      color: '#fff',  // White text when selected
       fontWeight: '600',
     },
-
+    disabledSlot: {
+      backgroundColor: '#f0f0f0',
+      borderColor: '#ccc',
+    },
+    disabledSlotText: {
+      color: '#aaa',
+    },
 
 
     calendarContainer: {
@@ -255,13 +261,9 @@ export const getGlobalStyles = () =>
     disabledDayText: {
       color: '#ccc',
     },
-    disabledSlot: {
-      backgroundColor: '#f0f0f0',
-      borderColor: '#ccc',
-    },
-    disabledSlotText: {
-      color: '#aaa',
-},
+
+    
+
 
   });
 

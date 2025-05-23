@@ -1,14 +1,6 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 export const getGlobalStyles = () =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#F5F0FA', // soft lavender background
-=======
-import { StyleSheet } from 'react-native';
-
-export const getGlobalStyles = () =>
-  StyleSheet.create({
     squareButtonGroup: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -39,6 +31,7 @@ export const getGlobalStyles = () =>
     squareButtonText: {
       color: 'white',
       fontSize: 16,
+      fontFamily: 'Montserrat',
       fontWeight: '600',
       textAlign: 'center',
     },
@@ -51,8 +44,9 @@ export const getGlobalStyles = () =>
       backgroundColor: '#fff', // soft lavender background
       paddingHorizontal: 20,
       paddingTop: 20,
-      flexGrow: 1, 
-      paddingBottom: 20
+      flexGrow: 1,
+      paddingBottom: 20,
+      fontFamily: 'Montserrat',
     },
     tabContainer: {
       flexDirection: 'row',
@@ -68,6 +62,7 @@ export const getGlobalStyles = () =>
     },
     tabText: {
       fontSize: 16,
+      fontFamily: 'Montserrat',
       color: '#5A4E7C', // muted lavender
     },
     activeTab: {
@@ -88,32 +83,39 @@ export const getGlobalStyles = () =>
       paddingHorizontal: 8,
     },
     primaryButton: {
+      fontSize: 18,
+      fontFamily: 'Montserrat',
       backgroundColor: '#9D7AC4',
+      color: '#fff',
       paddingVertical: 14,
       borderRadius: 10,
       alignItems: 'center',
     },
+    categoryButton: {
+      backgroundColor: '#9D7AC4',
+      color: '#fff',
+      paddingVertical: 14,
+      width: '32%',
+      marginBottom: 10,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    errorText: {
+      color: 'red',
+      fontFamily: 'Montserrat',
+    },
     secondaryButton: {
+      fontSize: 18,
+      fontFamily: 'Montserrat',
       backgroundColor: '#BFA2DB',
+      color: '#fff',
       paddingVertical: 14,
       borderRadius: 10,
       alignItems: 'center',
-      paddingVertical: 18,
-      borderRadius: 10,
-      alignItems: 'center',
-      flexDirection: 'row',
-      paddingHorizontal: 16,
-    },
-    secondaryButton: {
-      backgroundColor: '#BFA2DB',
-      paddingVertical: 18,
-      borderRadius: 10,
-      alignItems: 'center',
-      flexDirection: 'row',
-      paddingHorizontal: 16,
     },
     disabled: {
       backgroundColor: '#ddd',
+      color: `#000`,
       opacity: 0.6,
     },
     disabledButton: {
@@ -127,6 +129,7 @@ export const getGlobalStyles = () =>
       color: '#fff',
       fontWeight: '600',
       fontSize: 18,
+      fontFamily: 'Montserrat',
     },
 
     card: {
@@ -143,16 +146,19 @@ export const getGlobalStyles = () =>
     },
     name: {
       fontSize: 18,
+      fontFamily: 'Montserrat',
       fontWeight: 'bold',
       marginBottom: 4,
       color: '#5A4E7C',
     },
     detail: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
       color: '#6B5A8E',
     },
     status: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
       fontWeight: '600',
       marginTop: 8,
     },
@@ -165,10 +171,10 @@ export const getGlobalStyles = () =>
     buttonRow: {
       marginTop: 12,
       // Add these flexbox properties:
-  flexDirection: 'row',   // layout items horizontally
-  flexWrap: 'wrap',       // allow items to wrap to next line
-  justifyContent: 'flex-start',  // align items at start of each line
-  alignItems: 'flex-start',      // align items at top of each line
+      flexDirection: 'row',   // layout items horizontally
+      flexWrap: 'wrap',       // allow items to wrap to next line
+      justifyContent: 'flex-start',  // align items at start of each line
+      alignItems: 'flex-start',      // align items at top of each line
     },
     button: {
       flex: 1,
@@ -187,15 +193,14 @@ export const getGlobalStyles = () =>
       textAlign: 'center',
       marginTop: 50,
       fontSize: 16,
+      fontFamily: 'Montserrat',
       color: '#777',
     },
-   safeArea:{
+    safeArea: {
       flex: 1,
       backgroundColor: '#E6F0FA',
       paddingHorizontal: 20,
       paddingTop: 20,
-   },
-
     },
     headerGroup: {
       flexDirection: 'row',
@@ -209,23 +214,29 @@ export const getGlobalStyles = () =>
       backgroundColor: '#9D7AC4',
       padding: 6,
       borderRadius: 12,
+      fontFamily: 'Montserrat',
     },
     header: {
       fontSize: 22,
+      fontFamily: 'Montserrat',
       fontWeight: 'bold',
       color: '#9D7AC4',
       marginBottom: 10,
       marginTop: 10,
       textAlign: 'center',
+      fontFamily: 'Montserrat',
     },
     subheader: {
       fontSize: 18,
+      fontFamily: 'Montserrat',
+
       fontWeight: '600',
       color: '#5A4E7C',
       marginBottom: 8,
     },
     subtitle: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
       color: '#8D77A7',
       marginBottom: 6,
     },
@@ -235,6 +246,8 @@ export const getGlobalStyles = () =>
       paddingVertical: 12,
       paddingHorizontal: 16,
       fontSize: 16,
+      fontFamily: 'Montserrat',
+
       borderWidth: 1,
       borderColor: '#D9CBE8',
       marginBottom: 12,
@@ -269,6 +282,8 @@ export const getGlobalStyles = () =>
     },
     slotText: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
+
       color: '#5A4E7C',
     },
     selectedSlotText: {
@@ -301,6 +316,8 @@ export const getGlobalStyles = () =>
     },
     calendarHeaderText: {
       fontSize: 18,
+      fontFamily: 'Montserrat',
+
       fontWeight: '600',
       color: '#9D7AC4',
     },
@@ -311,6 +328,8 @@ export const getGlobalStyles = () =>
     },
     weekDay: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
+
       color: '#A390BF',
       textAlign: 'center',
       flex: 1,
@@ -330,6 +349,8 @@ export const getGlobalStyles = () =>
     },
     dayText: {
       fontSize: 14,
+      fontFamily: 'Montserrat',
+
       color: '#5A4E7C',
     },
     todayCell: {
@@ -345,101 +366,8 @@ export const getGlobalStyles = () =>
     disabledDayText: {
       color: '#ccc',
     },
+    label: {
+      fontFamily: 'Montserrat',
+      color: 'gray',
+    }
   });
-
-/* mari's stuff
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E6F0FA',
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    marginBottom: 16,
-    backgroundColor: '#D1E5FF',
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
-  tabButton: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center'
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#444'
-  },
-  activeTab: {
-    backgroundColor: '#1E60F0'
-  },
-  activeTabText: {
-    color: '#fff',
-    fontWeight: '600'
-  },
-  scrollContent: {
-    paddingBottom: 40
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: '#DDD'
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4
-  },
-  detail: {
-    fontSize: 14,
-    color: '#555'
-  },
-  status: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginTop: 8
-  },
-  approvedStatus: {
-    color: '#228B22'
-  },
-  pendingStatus: {
-    color: '#FF8C00'
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12
-  },
-  button: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginHorizontal: 5
-  },
-  approveButton: {
-    backgroundColor: '#1E60F0'
-  },
-  rejectButton: {
-    backgroundColor: '#FF4D4D'
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600'
-  },
-  noReservations: {
-    textAlign: 'center',
-    marginTop: 50,
-    fontSize: 16,
-    color: '#666'
-  }
-});
-*/

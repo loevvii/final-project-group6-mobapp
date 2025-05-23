@@ -7,12 +7,16 @@ import { getGlobalStyles } from '../../styles/globalstyles';
 const UserHistory: React.FC<Props> = () => {
   const { reservations, user } = useGlobalContext();
   const styles = getGlobalStyles();
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   if (!user) return null;
 
   const completedReservations = reservations.filter(
-    (r) => r.accId === user.id && r.status === 'completed'
+    (r) =>
+      r.accId === user.id &&
+      (r.status === 'completed' || r.status === 'rejected' || r.status === 'cancelled')
   );
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,6 +34,7 @@ const UserHistory: React.FC<Props> = () => {
               <Text style={styles.name}>Date: {item.date}</Text>
               <Text style={styles.detail}>Time: {item.time}</Text>
               <Text style={styles.detail}>Reason: {item.reason}</Text>
+              <Text style={styles.detail}>Status: {capitalize(item.status)}</Text>
             </View>
           )}
         />

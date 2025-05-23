@@ -11,21 +11,22 @@ import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
 import UserReservationScreen from '../pages/Reservation/UserReservation';
 import UserCurrentAppointments from '../pages/userview/userCurrentAppointments';
 import UserHistory from '../pages/userview/userHistory';
+// at some point i stopped touching this so if anything broke  then that sucks ig
 
 const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
   return (
     <GlobalProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{headerShown: false}}>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="UserHome" component={UserDashboard} />
-          <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
-          <Stack.Screen name="DoctorAppointments" component={DoctorAppointments} />
-          <Stack.Screen name="UserReservation" component={UserReservationScreen} />
-          <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} />
-          <Stack.Screen name="UserHistory" component={UserHistory} />
-          <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
+        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{}}>
+          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{title: "Login"}} />
+          <Stack.Screen name="UserHome" component={UserDashboard} options={{title: "Home"}} />
+          <Stack.Screen name="DoctorHome" component={DoctorDashboard} options={{title: "Home"}} />
+          <Stack.Screen name="DoctorAppointments" component={DoctorAppointments} options={{title: "Appointments"}} />
+          <Stack.Screen name="UserReservation" component={UserReservationScreen} options={{title: "Reservation"}} />
+          <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} options={{title: "Appointments"}} />
+          <Stack.Screen name="UserHistory" component={UserHistory} options={{title: "History"}} />
+          <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} options={{title: "Reservation"}} />
 
 
         </Stack.Navigator>

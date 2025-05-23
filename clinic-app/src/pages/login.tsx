@@ -26,6 +26,11 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   });
 
   const handleLogin = (emailOrUsername: string, password: string) => {
+    var redirectName = 'UserHome' // default to user
+    if (emailOrUsername == "Doctor" || emailOrUsername == "doctor@gmail.com") {
+      redirectName = 'DoctorHome'
+      // this just checks if ur a doctor
+    }
     const user = accounts.find((a) => (a.email === emailOrUsername || a.username == emailOrUsername) && a.password === password);
     if (!user) {
       Alert.alert('Login Failed', 'Incorrect email or password.');
@@ -34,7 +39,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     login(user);
     Alert.alert('Success', 'You are logged in!');
-    navigation.reset({ index: 0, routes: [{ name: 'UserHome' }] }); // or your valid screen
+    navigation.reset({ index: 0, routes: [{ name: redirectName }] }); // or your valid screen
   };
 
   const handleRegister = (username: string, email: string, password: string) => {

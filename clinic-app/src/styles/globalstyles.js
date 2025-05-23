@@ -33,6 +33,38 @@ export const getGlobalStyles = () =>
     scrollContent: {
       paddingBottom: 40,
     },
+
+    buttonGroup: {
+        marginTop: 20,
+        flexDirection: 'column',
+        gap: 12,
+        paddingHorizontal: 8,
+      },
+      primaryButton: {
+        backgroundColor: '#1E60F0',
+        paddingVertical: 14,
+        borderRadius: 10,
+        alignItems: 'center',
+      },
+      secondaryButton: {
+        backgroundColor: '#4B7BE5',
+        paddingVertical: 14,
+        borderRadius: 10,
+        alignItems: 'center',
+      },
+      disabledButton: {
+        backgroundColor: '#ccc',
+        paddingVertical: 14,
+        borderRadius: 10,
+        alignItems: 'center',
+        opacity: 0.6,
+      },
+      buttonText: {
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 16,
+      },
+
     card: {
       backgroundColor: '#fff',
       borderRadius: 12,

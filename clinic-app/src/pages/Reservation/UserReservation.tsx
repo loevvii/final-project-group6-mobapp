@@ -21,7 +21,7 @@ const timeSlots = {
   Evening: ['07:00 pm', '07:20 pm', '07:40 pm', '08:00 pm', '08:20 pm']
 };
 
-export default function UserReservation() {
+const UserReservation: React.FC = () => {
   const [selectedSlot, setSelectedSlot] = useState('');
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -269,3 +269,5 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   }
 });
+
+export default UserReservation;

@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { useGlobalContext } from '../../global/globalcontext';
 
-export default function ApproveReservation() {
+const ApproveReservation: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'pending' | 'approved'>('pending');
-  const { reservations, approveReservation, removeReservation } = useGlobalContext();
+  const { reservations, approveReservation, rejectReservation } = useGlobalContext();
 
   const handleApprove = (id: string) => {
     approveReservation(id);
@@ -19,7 +19,7 @@ export default function ApproveReservation() {
   };
 
   const handleReject = (id: string) => {
-    removeReservation(id);
+    rejectReservation(id);
     Alert.alert('Reservation rejected.');
   };
 
@@ -206,3 +206,5 @@ const styles = StyleSheet.create({
     color: '#666'
   }
 });
+
+export default ApproveReservation;

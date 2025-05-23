@@ -6,6 +6,8 @@ import { GlobalProvider } from '../global/globalcontext';
 import DoctorDashboard from '../pages/doctorview/dashboard/doctordashboard';
 import UserDashboard from '../pages/userview/dashboard/userdashboard';
 import LoginScreen from '../pages/login';
+import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
+import UserReservationScreen from '../pages/Reservation/UserReservation';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,8 @@ const AppNavigator = () => {
                     <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="UserHome" component={UserDashboard} />
                     <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
+                    <Stack.Screen name="UserReservation" component={UserReservationScreen} />
+                    <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </GlobalProvider>

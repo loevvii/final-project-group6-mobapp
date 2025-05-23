@@ -7,7 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
-  Platform
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import { useGlobalContext } from '../../global/globalcontext';
 import uuid from 'react-native-uuid';
@@ -69,6 +70,7 @@ export default function UserReservation() {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F7F9FC' }}>
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Appointment</Text>
 
@@ -170,6 +172,7 @@ export default function UserReservation() {
         <Text style={styles.confirmButtonText}>Confirm Appointment</Text>
       </TouchableOpacity>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

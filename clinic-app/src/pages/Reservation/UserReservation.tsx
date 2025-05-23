@@ -7,7 +7,8 @@ import {
   ScrollView,
   Alert,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 import { useGlobalContext } from '../../context/globalcontext';
 import { getGlobalStyles } from '../../styles/globalstyles';
@@ -31,11 +32,11 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
-  const styles = getGlobalStyles(); // NEW: it just grabs global styles its. yeah.  y ep
-  const { selectedDate } = route.params; // get date sent
-  const { user, addReservation, reservations } = useGlobalContext();  // added user from global context
+  const styles = getGlobalStyles();
+  const { selectedDate } = route.params;
+  const { user, addReservation, reservations } = useGlobalContext();
 
-  if (!user) return;
+  if (!user) return null;
 
   const formattedDate = format(date, 'yyyy-MM-dd');
 
@@ -74,44 +75,52 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text>Appointment</Text>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Text style={styles.header}>Book Appointment</Text>
 
-        <View>
-          <Text>Patient Information</Text>
+          <Text style={styles.subheader}>Patient Information</Text>
 
           <TextInput
+            style={styles.formInput}
             placeholder="Full Name"
             value={name}
             onChangeText={setName}
           />
           <TextInput
+            style={styles.formInput}
             placeholder="Age"
             keyboardType="numeric"
             value={age}
             onChangeText={setAge}
           />
           <TextInput
+            style={styles.formInput}
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
           />
           <TextInput
+            style={styles.formInput}
             placeholder="Contact Number"
             keyboardType="phone-pad"
             value={contact}
             onChangeText={setContact}
           />
           <TextInput
+            style={[styles.formInput, { height: 80 }]}
             placeholder="Reason for Appointment"
             value={reason}
             onChangeText={setReason}
             multiline
           />
 
-          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-            <Text>Select Date: {formattedDate}</Text>
+          <TouchableOpacity
+            style={[styles.formButton, { marginBottom: 12 }]}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.buttonText}>Select Date: {formattedDate}</Text>
           </TouchableOpacity>
 
           {showDatePicker && (
@@ -125,36 +134,50 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
               }}
             />
           )}
-        </View>
 
-        {Object.entries(timeSlots).map(([period, slots]) => (
-          <View key={period}>
-            <Text>{period} Slots</Text>
-            <View>
-              {slots.map((slot) => {
-                const normalizedSlot = slot.trim().toLowerCase();
-                const isTaken = takenSlots.includes(normalizedSlot);
+          {Object.entries(timeSlots).map(([period, slots]) => (
+            <View key={period} style={{ marginVertical: 10 }}>
+              <Text style={styles.subheader}>{period} Slots</Text>
+              <View style={styles.buttonRow}>
+                {slots.map((slot) => {
+                  const normalizedSlot = slot.trim().toLowerCase();
+                  const isTaken = takenSlots.includes(normalizedSlot);
+                  const isSelected = selectedSlot === slot;
 
-                return (
-                  <TouchableOpacity
-                    key={slot}
-                    onPress={() => {
-                      if (!isTaken) setSelectedSlot(slot);
-                    }}
-                    disabled={isTaken}
-                  >
-                    <Text>{slot}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+                  return (
+                    <TouchableOpacity
+                      key={slot}
+                      onPress={() => !isTaken && setSelectedSlot(slot)}
+                      disabled={isTaken}
+                      style={[
+                        styles.button,
+                        isSelected && styles.confirmButton,
+                        isTaken && { backgroundColor: '#ccc' }
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.buttonText,
+                          isTaken && { color: '#999' }
+                        ]}
+                      >
+                        {slot}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
 
-        <TouchableOpacity onPress={handleSubmit}>
-          <Text>Confirm Appointment</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            style={[styles.formButton, styles.confirmButton, { marginTop: 20 }]}
+            onPress={handleSubmit}
+          >
+            <Text style={styles.buttonText}>Confirm Appointment</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

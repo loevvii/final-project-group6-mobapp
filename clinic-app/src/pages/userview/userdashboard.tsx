@@ -3,39 +3,38 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import CalendarPicker from '../../components/CalendarPicker';
 import { useGlobalContext } from '../../context/globalcontext';
 import { Props } from '../../navigator/props';
-import { getGlobalStyles } from '../../styles/globalstyles'; 
+import { getGlobalStyles } from '../../styles/globalstyles';
 
 const UserDashboard: React.FC<Props> = ({ navigation }) => {
   const styles = getGlobalStyles();
   const [selectedDate, setSelectedDate] = useState('');
   const { user } = useGlobalContext();
 
-  if (!user) {
-    return // user is DEADDDDDD
-  }
+  if (!user) return null; // no undead rendering :)
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Welcome, {user.username}</Text>
 
       <CalendarPicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
 
-      <View style={{ marginTop: 20 }}>
+      <View style={styles.buttonGroup}>
         <TouchableOpacity
-          style={[styles.formButton, { marginBottom: 12 }]}
+          style={styles.primaryButton}
           onPress={() => navigation.navigate('UserReservation', { date: selectedDate })}
         >
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.formButton, { marginBottom: 12, backgroundColor: '#6C9EFF' }]}
+          style={styles.secondaryButton}
           onPress={() => navigation.navigate('UserCurrentAppointments', { date: selectedDate })}
         >
           <Text style={styles.buttonText}>View Current Appointments</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.formButton, { backgroundColor: '#aaa' }]}
+          style={styles.disabledButton}
           onPress={() => navigation.navigate('UserHistory')}
         >
           <Text style={styles.buttonText}>View Previous Appointments</Text>

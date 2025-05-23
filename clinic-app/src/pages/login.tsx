@@ -6,32 +6,38 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const { accounts, addAccount, storeAccount, usernameExists, emailExists, login  } = useGlobalContext();
+  const { accounts, addAccount, storeAccount, usernameExists, emailExists, login } = useGlobalContext();
   const [isRegistering, setIsRegistering] = useState(false);
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Invalid email format.')
-      .required('Email is empty!'),
-    password: Yup.string()
-      .min(8, 'Password must be 8-15 letters long.')
-      .max(15, 'Password must be 8-15 letters long.')
-      .required('Password is empty!'),
-    confirmPassword: Yup.string().when('isRegistering', {
-      is: true,
-      then: Yup.string()
-        .oneOf([Yup.ref('password'), ''], 'Passwords do not match.')
-        .required('Please confirm your password.'),
-    }),
-  });
+  const getValidationSchema = (isRegistering: boolean) =>
+    Yup.object().shape({
+      email: Yup.string()
+        .email('Invalid email format.')
+        .required('Email is empty!'),
+      password: Yup.string()
+        .min(8, 'Password must be 8-15 letters long.')
+        .max(15, 'Password must be 8-15 letters long.')
+        .required('Password is empty!'),
+      confirmPassword: isRegistering
+        ? Yup.string()
+            .oneOf([Yup.ref('password'), ''], 'Passwords do not match.')
+            .required('Please confirm your password.')
+        : Yup.string(),
+      username: isRegistering
+        ? Yup.string()
+            .required('Username is required.')
+            .min(3, 'Username must be at least 3 characters long.')
+        : Yup.string(),
+    });
 
   const handleLogin = (emailOrUsername: string, password: string) => {
-    var redirectName = 'UserHome' // default to user
-    if (emailOrUsername == "Doctor" || emailOrUsername == "doctor@gmail.com") {
-      redirectName = 'DoctorHome'
-      // this just checks if ur a doctor
+    var redirectName = 'UserHome';
+    if (emailOrUsername === "Doctor" || emailOrUsername === "doctor@gmail.com") {
+      redirectName = 'DoctorHome';
     }
-    const user = accounts.find((a) => (a.email === emailOrUsername || a.username == emailOrUsername) && a.password === password);
+    const user = accounts.find(
+      (a) => (a.email === emailOrUsername || a.username === emailOrUsername) && a.password === password
+    );
     if (!user) {
       Alert.alert('Login Failed', 'Incorrect email or password.');
       return;
@@ -39,7 +45,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     login(user);
     Alert.alert('Success', 'You are logged in!');
-    navigation.reset({ index: 0, routes: [{ name: redirectName }] }); // or your valid screen
+    navigation.reset({ index: 0, routes: [{ name: redirectName }] });
   };
 
   const handleRegister = (username: string, email: string, password: string) => {
@@ -48,7 +54,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
     if (usernameExists(username)) {
-      Alert.alert('Registration Failed', 'That email is already registered!');
+      Alert.alert('Registration Failed', 'That username is already taken!');
       return;
     }
     addAccount(username, email, password);
@@ -64,25 +70,54 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {isRegistering ? 'Register' : 'Login'}
       </Text>
       <Formik
-        initialValues={{ email: '', password: '', confirmPassword: '' }}
-        validationSchema={validationSchema}
+        initialValues={{ email: '', username: '', password: '', confirmPassword: '' }}
+        validationSchema={getValidationSchema(isRegistering)}
         onSubmit={(values, { resetForm }) => {
-          const { email, password } = values;
-          isRegistering ? handleRegister(email, password) : handleLogin(email, password);
+          const { email, username, password } = values;
+          isRegistering ? handleRegister(username, email, password) : handleLogin(email, password);
           resetForm();
         }}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
           <View>
-            <Text>Email</Text>
-            <TextInput
-              placeholder="Email"
-              onChangeText={handleChange('email')}
-              value={values.email}
-              autoCapitalize="none"
-              style={{ borderBottomWidth: 1, marginBottom: 10 }}
-            />
-            {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+            {!isRegistering ? (
+              <>
+                <Text>Email or Username</Text>
+                <TextInput
+                  placeholder="Email or Username"
+                  onChangeText={handleChange('email')}
+                  value={values.email}
+                  autoCapitalize="none"
+                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                />
+                {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+              </>
+            ) : (
+              <>
+                <Text>Email</Text>
+                <TextInput
+                  placeholder="Email"
+                  onChangeText={handleChange('email')}
+                  value={values.email}
+                  autoCapitalize="none"
+                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                />
+                {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+
+                <Text>Username</Text>
+                <TextInput
+                  placeholder="Username"
+                  onChangeText={handleChange('username')}
+                  value={values.username}
+                  autoCapitalize="none"
+                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                />
+                {touched.username && errors.username && (
+                  <Text style={{ color: 'red' }}>{errors.username}</Text>
+                )}
+              </>
+            )}
+
             <Text>Password</Text>
             <TextInput
               placeholder="Password"
@@ -94,6 +129,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             {touched.password && errors.password && (
               <Text style={{ color: 'red' }}>{errors.password}</Text>
             )}
+
             {isRegistering && (
               <>
                 <Text>Confirm Password</Text>
@@ -109,11 +145,13 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 )}
               </>
             )}
+
             <TouchableOpacity onPress={() => handleSubmit()} style={{ marginVertical: 10 }}>
               <Text style={{ fontSize: 16, textAlign: 'center' }}>
                 {isRegistering ? 'Register' : 'Login'}
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
               <Text style={{ textAlign: 'center', color: 'blue' }}>
                 {isRegistering ? 'Already have an account? Login' : 'New here? Register'}

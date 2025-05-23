@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Platform, TouchableOpacity } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import CalendarPicker from '../../components/CalendarPicker';
 import { useGlobalContext } from '../../context/globalcontext';
 import { Props } from '../../navigator/props';
+import { getGlobalStyles } from '../../styles/globalstyles'; 
 
 const UserDashboard: React.FC<Props> = ({ navigation }) => {
+  const styles = getGlobalStyles();
   const [selectedDate, setSelectedDate] = useState('');
   const { user } = useGlobalContext();
 
@@ -13,22 +14,34 @@ const UserDashboard: React.FC<Props> = ({ navigation }) => {
     return // user is DEADDDDDD
   }
   return (
-    <View>
-      <Text>
-        Welcome, {user.username}
-      </Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>Welcome, {user.username}</Text>
 
       <CalendarPicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
-      <TouchableOpacity onPress={() => navigation.navigate('UserReservation', { date: selectedDate })}>
-        Book Appointment
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('UserCurrentAppointments', { date: selectedDate })}>
-        View Current Appointments
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('UserHistory')}>
-        View Previous Appointments
-      </TouchableOpacity>
-    </View >
+
+      <View style={{ marginTop: 20 }}>
+        <TouchableOpacity
+          style={[styles.formButton, { marginBottom: 12 }]}
+          onPress={() => navigation.navigate('UserReservation', { date: selectedDate })}
+        >
+          <Text style={styles.buttonText}>Book Appointment</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.formButton, { marginBottom: 12, backgroundColor: '#6C9EFF' }]}
+          onPress={() => navigation.navigate('UserCurrentAppointments', { date: selectedDate })}
+        >
+          <Text style={styles.buttonText}>View Current Appointments</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.formButton, { backgroundColor: '#aaa' }]}
+          onPress={() => navigation.navigate('UserHistory')}
+        >
+          <Text style={styles.buttonText}>View Previous Appointments</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 

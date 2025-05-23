@@ -1,8 +1,16 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Alert
+} from 'react-native';
 import { useGlobalContext } from '../../global/globalcontext';
 
 export default function ApproveReservation() {
+  const [activeTab, setActiveTab] = useState<'pending' | 'approved'>('pending');
   const { reservations, approveReservation, removeReservation } = useGlobalContext();
 
   const handleApprove = (id: string) => {
@@ -15,60 +23,127 @@ export default function ApproveReservation() {
     Alert.alert('Reservation rejected.');
   };
 
+  const filteredReservations = reservations.filter(
+    (r) => r.status === activeTab
+  );
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heading}>Pending Reservations</Text>
+    <View style={styles.container}>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            activeTab === 'pending' && styles.activeTab
+          ]}
+          onPress={() => setActiveTab('pending')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === 'pending' && styles.activeTabText
+            ]}
+          >
+            Pending
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            activeTab === 'approved' && styles.activeTab
+          ]}
+          onPress={() => setActiveTab('approved')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === 'approved' && styles.activeTabText
+            ]}
+          >
+            Approved
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-      {reservations.length === 0 ? (
-        <Text style={styles.noReservations}>No pending reservations.</Text>
-      ) : (
-        reservations.map((res) => (
-          <View key={res.id} style={styles.card}>
-            <Text style={styles.name}>{res.name}</Text>
-            <Text style={styles.detail}>Age: {res.age}</Text>
-            <Text style={styles.detail}>Reason: {res.reason}</Text>
-            <Text style={styles.detail}>Date: {res.date}</Text>
-            <Text style={styles.detail}>Time: {res.time}</Text>
-            <Text style={styles.status}>Status: {res.status}</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {filteredReservations.length === 0 ? (
+          <Text style={styles.noReservations}>
+            No {activeTab} reservations.
+          </Text>
+        ) : (
+          filteredReservations.map((res) => (
+            <View key={res.id} style={styles.card}>
+              <Text style={styles.name}>{res.name}</Text>
+              <Text style={styles.detail}>Age: {res.age}</Text>
+              <Text style={styles.detail}>Reason: {res.reason}</Text>
+              <Text style={styles.detail}>Date: {res.date}</Text>
+              <Text style={styles.detail}>Time: {res.time}</Text>
+              <Text
+                style={[
+                  styles.status,
+                  res.status === 'approved'
+                    ? styles.approvedStatus
+                    : styles.pendingStatus
+                ]}
+              >
+                Status: {res.status}
+              </Text>
 
-            {res.status === 'pending' && (
-              <View style={styles.buttonRow}>
-                <TouchableOpacity
-                  style={[styles.button, styles.approveButton]}
-                  onPress={() => handleApprove(res.id)}
-                >
-                  <Text style={styles.buttonText}>Approve</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.rejectButton]}
-                  onPress={() => handleReject(res.id)}
-                >
-                  <Text style={styles.buttonText}>Reject</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ))
-      )}
-    </ScrollView>
+              {res.status === 'pending' && (
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.approveButton]}
+                    onPress={() => handleApprove(res.id)}
+                  >
+                    <Text style={styles.buttonText}>Approve</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.button, styles.rejectButton]}
+                    onPress={() => handleReject(res.id)}
+                  >
+                    <Text style={styles.buttonText}>Reject</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: '#F7F9FC'
+    flex: 1,
+    backgroundColor: '#E6F0FA',
+    paddingHorizontal: 20,
+    paddingTop: 20
   },
-  heading: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20
+  tabContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    backgroundColor: '#D1E5FF',
+    borderRadius: 10,
+    overflow: 'hidden'
   },
-  noReservations: {
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center'
+  },
+  tabText: {
     fontSize: 16,
-    color: '#777',
-    textAlign: 'center',
-    marginTop: 50
+    color: '#444'
+  },
+  activeTab: {
+    backgroundColor: '#1E60F0'
+  },
+  activeTabText: {
+    color: '#fff',
+    fontWeight: '600'
+  },
+  scrollContent: {
+    paddingBottom: 40
   },
   card: {
     backgroundColor: '#fff',
@@ -80,7 +155,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     borderWidth: 1,
-    borderColor: '#EEE'
+    borderColor: '#DDD'
   },
   name: {
     fontSize: 18,
@@ -94,8 +169,13 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 14,
     fontWeight: '600',
-    marginTop: 8,
-    color: '#333'
+    marginTop: 8
+  },
+  approvedStatus: {
+    color: '#228B22'
+  },
+  pendingStatus: {
+    color: '#FF8C00'
   },
   buttonRow: {
     flexDirection: 'row',
@@ -118,5 +198,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: '600'
+  },
+  noReservations: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 16,
+    color: '#666'
   }
 });

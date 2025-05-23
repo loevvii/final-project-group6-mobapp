@@ -9,9 +9,10 @@ import {
   Alert,
   Platform
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useGlobalContext } from '../../global/globalcontext';
 import uuid from 'react-native-uuid';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
 
 const timeSlots = {
   Morning: ['10:10 am', '10:30 am', '10:50 am', '11:20 am', '11:40 am'],
@@ -28,7 +29,14 @@ export default function UserReservation() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
-  const { addReservation } = useGlobalContext();
+
+  const { addReservation, reservations } = useGlobalContext();
+
+  const formattedDate = format(date, 'yyyy-MM-dd');
+
+  const takenSlots = reservations
+    .filter((r) => r.status === 'approved' && r.date === formattedDate)
+    .map((r) => r.time.trim().toLowerCase());
 
   const handleSubmit = () => {
     if (!selectedSlot || !name || !age || !reason || !email || !contact) {
@@ -43,32 +51,27 @@ export default function UserReservation() {
       reason,
       email,
       contact,
-      date: date.toISOString().split('T')[0], 
+      date: formattedDate,
       time: selectedSlot,
       status: 'pending'
     };
 
     addReservation(newReservation);
     Alert.alert('Reservation submitted!');
+
+    // Reset fields
     setSelectedSlot('');
     setName('');
     setAge('');
     setReason('');
     setEmail('');
     setContact('');
-    setDate(new Date());
-  };
-
-  const onChangeDate = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(Platform.OS === 'ios');
-    if (selectedDate) {
-      setDate(selectedDate);
-    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Appointment</Text>
+
       <View style={styles.infoSection}>
         <Text style={styles.subHeading}>Patient Information</Text>
 
@@ -106,18 +109,22 @@ export default function UserReservation() {
           multiline
         />
 
-        <Text style={styles.subHeading}>Select Appointment Date</Text>
-        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
-          <Text>{date.toDateString()}</Text>
+        <TouchableOpacity
+          onPress={() => setShowDatePicker(true)}
+          style={styles.datePickerButton}
+        >
+          <Text style={styles.datePickerText}>Select Date: {formattedDate}</Text>
         </TouchableOpacity>
 
         {showDatePicker && (
           <DateTimePicker
             value={date}
             mode="date"
-            display="default"
-            onChange={onChangeDate}
-            minimumDate={new Date()}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) setDate(selectedDate);
+            }}
           />
         )}
       </View>
@@ -126,20 +133,35 @@ export default function UserReservation() {
         <View key={period} style={styles.slotGroup}>
           <Text style={styles.slotGroupTitle}>{period} Slots</Text>
           <View style={styles.slotRow}>
-            {slots.map(slot => (
-              <TouchableOpacity
-                key={slot}
-                style={[
-                  styles.slotButton,
-                  selectedSlot === slot && styles.selectedSlot
-                ]}
-                onPress={() => setSelectedSlot(slot)}
-              >
-                <Text style={selectedSlot === slot ? styles.selectedSlotText : styles.slotText}>
-                  {slot}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {slots.map((slot) => {
+              const normalizedSlot = slot.trim().toLowerCase();
+              const isTaken = takenSlots.includes(normalizedSlot);
+
+              return (
+                <TouchableOpacity
+                  key={slot}
+                  style={[
+                    styles.slotButton,
+                    selectedSlot === slot && styles.selectedSlot,
+                    isTaken && styles.disabledSlot
+                  ]}
+                  onPress={() => {
+                    if (!isTaken) setSelectedSlot(slot);
+                  }}
+                  disabled={isTaken}
+                >
+                  <Text
+                    style={[
+                      styles.slotText,
+                      selectedSlot === slot && styles.selectedSlotText,
+                      isTaken && styles.disabledSlotText
+                    ]}
+                  >
+                    {slot}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
       ))}
@@ -180,6 +202,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DDD'
   },
+  datePickerButton: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    marginBottom: 12
+  },
+  datePickerText: {
+    color: '#333'
+  },
   slotGroup: {
     marginBottom: 10
   },
@@ -196,7 +229,7 @@ const styles = StyleSheet.create({
   slotButton: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    paddingHorizontal: 5,
+    paddingHorizontal: 12,
     paddingVertical: 10,
     margin: 5,
     borderWidth: 1,
@@ -212,6 +245,13 @@ const styles = StyleSheet.create({
   selectedSlotText: {
     color: '#fff',
     fontWeight: 'bold'
+  },
+  disabledSlot: {
+    backgroundColor: '#E0E0E0',
+    borderColor: '#999'
+  },
+  disabledSlotText: {
+    color: '#999'
   },
   confirmButton: {
     backgroundColor: '#1E60F0',

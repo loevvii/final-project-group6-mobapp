@@ -123,12 +123,26 @@ export const getGlobalStyles = () =>
       fontSize: 16,
       color: '#777',
     },
-
+    headerGroup: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',  // pushes children to opposite ends
+      alignItems: 'center',             // vertically center texts if needed
+      paddingHorizontal: 16,            // optional padding
+      paddingVertical: 8,
+    },
+    headerRight: {
+      color: '#fff',
+      backgroundColor: '#9D7AC4',
+      padding: 6,
+      borderRadius: 12,
+    },
     header: {
       fontSize: 22,
       fontWeight: 'bold',
       color: '#9D7AC4',
       marginBottom: 10,
+      marginTop: 10,
+      textAlign: 'center',
     },
     subheader: {
       fontSize: 18,

@@ -2,19 +2,28 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 // removed global provider cause we're gonna useGlobalContext instead but for no real reason other than "im used to it :joy:"
-import DoctorDashboard from '../pages/doctorview/dashboard/doctordashboard';
-import UserDashboard from '../pages/userview/dashboard/userdashboard';
+import { GlobalProvider } from '../context/globalcontext';
+import DoctorDashboard from '../pages/doctorview/doctordashboard';
+import UserDashboard from '../pages/userview/userdashboard';
+import LoginScreen from '../pages/login';
+import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
+import UserReservationScreen from '../pages/Reservation/UserReservation';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     return (
+        <GlobalProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="DoctorHome" >
+                <Stack.Navigator initialRouteName="DoctorHome">
+                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="UserHome" component={UserDashboard} />
                     <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
+                    <Stack.Screen name="UserReservation" component={UserReservationScreen} />
+                    <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
-    );
+        </GlobalProvider>
+        );
 };
 export default AppNavigator;

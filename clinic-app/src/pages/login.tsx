@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useGlobalContext } from '../global/globalcontext'; // this will attach to the table, which i think will store the accounts but only for runtime, we're not doing db
+import { useGlobalContext } from '../context/globalcontext'; // this will attach to the table, which i think will store the accounts but only for runtime, we're not doing db
 import { Props } from '../navigator/props';
 import { Formik } from 'formik';
 import * as Yup from 'yup';

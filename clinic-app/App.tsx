@@ -1,6 +1,6 @@
 import { SafeAreaView, StatusBar } from 'react-native';
 import AppNavigator from './src/navigator/AppNavigator';
-import { GlobalProvider } from './src/global/globalcontext';
+import { GlobalProvider } from './src/context/globalcontext';
 
 export default function App() {
   return (

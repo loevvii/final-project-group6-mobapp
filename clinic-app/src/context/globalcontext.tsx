@@ -1,9 +1,10 @@
 // globalcontext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import uuid from 'react-native-uuid';
 
 interface Account {
     id: string;
+    email: string;
     username: string;
     password: string;
 }
@@ -30,7 +31,7 @@ interface GlobalContextProps {
     // Account context
     accounts: Account[];
     storedAccounts: Account[];
-    addAccount: (username: string, password: string) => void;
+    addAccount: (username: string, email:string, password: string) => void;
     storeAccount: (account: Account) => void;
     removeAccount: (accountId: string) => void;
     usernameExists: (username: string) => boolean;
@@ -54,15 +55,26 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [storedAccounts, setStoredAccounts] = useState<Account[]>([]);
 
-    const addAccount = (username: string, password: string) => {
+  
+    const addAccount = (username: string, email: string, password: string) => {
         const newAccount: Account = {
             id: uuid.v4() as string,
+            email,
             username,
             password,
         };
         setAccounts((prev) => [...prev, newAccount]);
     };
 
+    useEffect(() => {
+        addAccount("Doctor", "doctor@gmail.com", "admin123");   // this makes a admin :3
+        /* remove me
+        addAccount("User", "user@gmail.com", "user123");   // this makes a user for mari :3
+        const user = accounts.find((a) => (a.email === "user@gmail.com" || a.username == "user@gmail.com") && a.password === "user123");
+        login(user)
+        remove me.. */ 
+    });    
+    
     const storeAccount = (account: Account) => {
         setStoredAccounts((prev) =>
             prev.some((a) => a.id === account.id) ? prev : [...prev, account]
@@ -75,6 +87,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
     const usernameExists = (username: string) => {
         return accounts.some((a) => a.username === username);
+    };
+
+    const emailExists = (email: string) => {
+        return accounts.some((a) => a.email === email);
     };
 
     // Reservations
@@ -112,6 +128,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
                 storeAccount,
                 removeAccount,
                 usernameExists,
+                emailExists,
                 reservations,
                 addReservation,
                 approveReservation,

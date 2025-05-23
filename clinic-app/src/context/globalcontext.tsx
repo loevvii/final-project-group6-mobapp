@@ -19,7 +19,7 @@ interface Reservation {
     reason: string;
     date: string;
     time: string;
-    status: 'pending' | 'approved' | 'rejected' | 'cancelled';
+    status: 'pending' | 'approved' | 'rejected' | 'cancelled' | 'completed' | 'missed';
 }
 
 interface GlobalContextProps {
@@ -35,6 +35,7 @@ interface GlobalContextProps {
     storeAccount: (account: Account) => void;
     removeAccount: (accountId: string) => void;
     usernameExists: (username: string) => boolean;
+    emailExists: (email: string) => boolean;
 
     // Reservation context
     reservations: Reservation[];

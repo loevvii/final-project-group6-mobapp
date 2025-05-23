@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 // removed global provider cause we're gonna useGlobalContext instead but for no real reason other than "im used to it :joy:"
 import { GlobalProvider } from '../context/globalcontext';
 import DoctorDashboard from '../pages/doctorview/doctordashboard';
+import DoctorAppointments from '../pages/doctorview/doctorViewAppointments';
 import UserDashboard from '../pages/userview/userdashboard';
 import LoginScreen from '../pages/login';
 import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
@@ -20,6 +21,7 @@ const AppNavigator = () => {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="UserHome" component={UserDashboard} />
           <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
+          <Stack.Screen name="DoctorAppointments" component={DoctorAppointments} />
           <Stack.Screen name="UserReservation" component={UserReservationScreen} />
           <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} />
           <Stack.Screen name="UserHistory" component={UserHistory} />

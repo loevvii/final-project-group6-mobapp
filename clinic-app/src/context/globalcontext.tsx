@@ -10,6 +10,7 @@ interface Account {
 
 interface Reservation {
     id: string;
+    accId: string;
     name: string;
     age: string;
     email: string;
@@ -21,6 +22,12 @@ interface Reservation {
 }
 
 interface GlobalContextProps {
+    // User context
+    user: Account | null;
+    login: (userData: Account) => void;
+    logout: () => void;
+
+    // Account context
     accounts: Account[];
     storedAccounts: Account[];
     addAccount: (username: string, password: string) => void;
@@ -30,7 +37,7 @@ interface GlobalContextProps {
 
     // Reservation context
     reservations: Reservation[];
-    addReservation: (reservation: Omit<Reservation, 'id' | 'status'>) => void;
+    addReservation: (reservation: Omit<Reservation, 'id' | 'status'>, accountId: string) => void;
     approveReservation: (id: string) => void;
     rejectReservation: (id: string) => void;
     cancelReservation: (id: string) => void;
@@ -40,6 +47,10 @@ const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     // Accounts
+    const [user, setUser] = useState<Account | null>(null);
+    const login = (userData: Account) => setUser(userData);
+    const logout = () => setUser(null);
+
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [storedAccounts, setStoredAccounts] = useState<Account[]>([]);
 
@@ -69,10 +80,11 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     // Reservations
     const [reservations, setReservations] = useState<Reservation[]>([]);
 
-    const addReservation = (reservation: Omit<Reservation, 'id' | 'status'>) => {
+    const addReservation = (reservation: Omit<Reservation, 'id' | 'status'>, accountId: string | null) => {
         const newReservation: Reservation = {
             ...reservation,
             id: uuid.v4() as string,
+            accId: accountId,
             status: 'pending',
         };
         setReservations((prev) => [...prev, newReservation]);
@@ -91,6 +103,9 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     return (
         <GlobalContext.Provider
             value={{
+                user,
+                login,
+                logout,
                 accounts,
                 storedAccounts,
                 addAccount,

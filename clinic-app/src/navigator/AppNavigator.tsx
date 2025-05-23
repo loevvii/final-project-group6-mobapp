@@ -8,6 +8,9 @@ import UserDashboard from '../pages/userview/userdashboard';
 import LoginScreen from '../pages/login';
 import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
 import UserReservationScreen from '../pages/Reservation/UserReservation';
+import UserCurrentAppointments from '../pages/userview/userCurrentAppointments';
+import UserHistory from '../pages/userview/userHistory';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +23,11 @@ const AppNavigator = () => {
                     <Stack.Screen name="UserHome" component={UserDashboard} />
                     <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
                     <Stack.Screen name="UserReservation" component={UserReservationScreen} />
+                    <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} />
+                    <Stack.Screen name="UserHistory" component={UserHistory} />
                     <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
+                    
+
                 </Stack.Navigator>
             </NavigationContainer>
         </GlobalProvider>

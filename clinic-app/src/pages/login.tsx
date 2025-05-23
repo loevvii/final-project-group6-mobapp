@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const { accounts, addAccount, storeAccount, usernameExists } = useGlobalContext();
+  const { accounts, addAccount, storeAccount, usernameExists, login  } = useGlobalContext();
   const [isRegistering, setIsRegistering] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -31,9 +31,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       Alert.alert('Login Failed', 'Incorrect email or password.');
       return;
     }
-    storeAccount(user);
+
+    login(user);
     Alert.alert('Success', 'You are logged in!');
-    navigation.reset({ index: 0, routes: [{ name: 'JobFinder' }] }); // or your valid screen
+    navigation.reset({ index: 0, routes: [{ name: 'UserHome' }] }); // or your valid screen
   };
 
   const handleRegister = (email: string, password: string) => {

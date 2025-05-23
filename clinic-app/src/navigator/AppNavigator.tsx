@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 // removed global provider cause we're gonna useGlobalContext instead but for no real reason other than "im used to it :joy:"
@@ -14,27 +14,22 @@ import { useGlobalContext } from '../context/globalcontext';
 
 const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
-    const { addAccount } = useGlobalContext();
-      useEffect(() => {
-        addAccount("Doctor", "doctor@gmail.com", "admin123");
-      }, []);
+  return (
+    <GlobalProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="LoginScreen">
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="UserHome" component={UserDashboard} />
+          <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
+          <Stack.Screen name="UserReservation" component={UserReservationScreen} />
+          <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} />
+          <Stack.Screen name="UserHistory" component={UserHistory} />
+          <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
 
-    return (
-        <GlobalProvider>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="LoginScreen">
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen name="UserHome" component={UserDashboard} />
-                    <Stack.Screen name="DoctorHome" component={DoctorDashboard} />
-                    <Stack.Screen name="UserReservation" component={UserReservationScreen} />
-                    <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} />
-                    <Stack.Screen name="UserHistory" component={UserHistory} />
-                    <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} />
-                    
 
-                </Stack.Navigator>
-            </NavigationContainer>
-        </GlobalProvider>
-        );
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GlobalProvider>
+  );
 };
 export default AppNavigator;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useGlobalContext } from '../context/globalcontext';
 import { Props } from '../navigator/props';
@@ -8,44 +8,63 @@ import * as Yup from 'yup';
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const { accounts, addAccount, storeAccount, usernameExists, emailExists, login } = useGlobalContext();
   const [isRegistering, setIsRegistering] = useState(false);
+  const hasAddedDefault = useRef(false);
 
+  useEffect(() => {
+    if (!hasAddedDefault.current && !accounts.find(a => a.username === 'Doctor')) {
+      addAccount('Doctor', 'doctor@gmail.com', 'admin123');
+      hasAddedDefault.current = true;
+      console.log("added doctor");
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("Current accounts:", accounts);
+  }, [accounts]);
+  
   const getValidationSchema = (isRegistering: boolean) =>
-  Yup.object().shape({
-    email: isRegistering
-      ? Yup.string().email('Invalid email format.').required('Email is empty!')
-      : Yup.string(),
-    username: isRegistering
-      ? Yup.string().required('Username is required.').min(3, 'Username must be at least 3 characters long.')
-      : Yup.string(),
-    emailOrUsername: !isRegistering
-      ? Yup.string().required('Username or email is required.').min(3, 'Must be at least 3 characters.')
-      : Yup.string(),
-    password: Yup.string()
-      .min(8, 'Password must be 8-15 letters long.')
-      .max(15, 'Password must be 8-15 letters long.')
-      .required('Password is empty!'),
-    confirmPassword: isRegistering
-      ? Yup.string()
+    Yup.object().shape({
+      email: isRegistering
+        ? Yup.string().email('Invalid email format.').required('Email is empty!')
+        : Yup.string(),
+      username: isRegistering
+        ? Yup.string().required('Username is required.').min(3, 'Username must be at least 3 characters long.')
+        : Yup.string(),
+      emailOrUsername: !isRegistering
+        ? Yup.string().required('Username or email is required.').min(3, 'Must be at least 3 characters.')
+        : Yup.string(),
+      password: Yup.string()
+        .min(8, 'Password must be 8-15 letters long.')
+        .max(15, 'Password must be 8-15 letters long.')
+        .required('Password is empty!'),
+      confirmPassword: isRegistering
+        ? Yup.string()
           .oneOf([Yup.ref('password')], 'Passwords do not match.')
           .required('Please confirm your password.')
-      : Yup.string(),
-  });
+        : Yup.string(),
+    });
 
   const handleLogin = (emailOrUsername: string, password: string) => {
     console.log('running');
+    console.log('Current accounts:', accounts);
     var redirectName = 'UserHome';
     if (emailOrUsername === "Doctor" || emailOrUsername === "doctor@gmail.com") {
       redirectName = 'DoctorHome';
+      console.log('doc');
     }
     const user = accounts.find(
       (a) => (a.email === emailOrUsername || a.username === emailOrUsername) && a.password === password
     );
     if (!user) {
       Alert.alert('Login Failed', 'Incorrect email or password.');
+      console.log('fail');
+
       return;
     }
 
     login(user);
+    console.log('success');
+
     Alert.alert('Success', 'You are logged in!');
     navigation.reset({ index: 0, routes: [{ name: redirectName }] });
   };
@@ -95,8 +114,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 />
                 {touched.emailOrUsername && errors.emailOrUsername && (
                   <Text style={{ color: 'red' }}>{errors.emailOrUsername}</Text>
-                )}              
-                </>
+                )}
+              </>
             ) : (
               <>
                 <Text>Email</Text>

@@ -14,6 +14,7 @@ import { getGlobalStyles } from '../../styles/globalstyles';
 import uuid from 'react-native-uuid';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
+import { Props } from '../../navigator/props';
 
 const timeSlots = {
   Morning: ['10:10 am', '10:30 am', '10:50 am', '11:20 am', '11:40 am'],
@@ -21,7 +22,7 @@ const timeSlots = {
   Evening: ['07:00 pm', '07:20 pm', '07:40 pm', '08:00 pm', '08:20 pm']
 };
 
-const UserReservation: React.FC = () => {
+const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   const [selectedSlot, setSelectedSlot] = useState('');
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -31,6 +32,8 @@ const UserReservation: React.FC = () => {
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
   const styles = getGlobalStyles(); // NEW: it just grabs global styles its. yeah.  y ep
+  const { selectedDate } = route.params; // get date sent
+
 
   const { addReservation, reservations } = useGlobalContext();
 

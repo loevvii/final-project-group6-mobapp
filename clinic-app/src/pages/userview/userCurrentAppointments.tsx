@@ -3,12 +3,12 @@ import { View, Text, TextInput, Button, Platform, TouchableOpacity } from 'react
 import { Props } from '../../navigator/props';
 
 const UserCurrentAppointments: React.FC<Props> = ({ route, navigation }) => {
-    const { date } = route.params; // Get job details from navigation props
+    const { selectedDate } = route.params; // Get job details from navigation props
 
   return (
     <View>
       <Text>
-        Current Appointments {date}
+        Current Appointments {selectedDate}
       </Text>
     </View >
   );

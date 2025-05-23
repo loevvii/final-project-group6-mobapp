@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const { accounts, addAccount, storeAccount, usernameExists, login  } = useGlobalContext();
+  const { accounts, addAccount, storeAccount, usernameExists, emailExists, login  } = useGlobalContext();
   const [isRegistering, setIsRegistering] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -25,8 +25,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     }),
   });
 
-  const handleLogin = (email: string, password: string) => {
-    const user = accounts.find((a) => a.username === email && a.password === password);
+  const handleLogin = (emailOrUsername: string, password: string) => {
+    const user = accounts.find((a) => (a.email === emailOrUsername || a.username == emailOrUsername) && a.password === password);
     if (!user) {
       Alert.alert('Login Failed', 'Incorrect email or password.');
       return;
@@ -37,13 +37,17 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     navigation.reset({ index: 0, routes: [{ name: 'UserHome' }] }); // or your valid screen
   };
 
-  const handleRegister = (email: string, password: string) => {
-    if (usernameExists(email)) {
+  const handleRegister = (username: string, email: string, password: string) => {
+    if (emailExists(email)) {
       Alert.alert('Registration Failed', 'That email is already registered!');
       return;
     }
-    addAccount(email, password);
-    const newUser = accounts.find((a) => a.username === email && a.password === password);
+    if (usernameExists(username)) {
+      Alert.alert('Registration Failed', 'That email is already registered!');
+      return;
+    }
+    addAccount(username, email, password);
+    const newUser = accounts.find((a) => a.username === username && a.email === email && a.password === password);
     if (newUser) storeAccount(newUser);
     Alert.alert('Registration Successful');
     setIsRegistering(false);

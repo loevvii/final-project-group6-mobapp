@@ -41,12 +41,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       Alert.alert('Registration Failed', 'That email is already registered!');
       return;
     }
-
     addAccount(email, password);
-
     const newUser = accounts.find((a) => a.username === email && a.password === password);
     if (newUser) storeAccount(newUser);
-
     Alert.alert('Registration Successful');
     setIsRegistering(false);
   };
@@ -56,7 +53,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
         {isRegistering ? 'Register' : 'Login'}
       </Text>
-
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '' }}
         validationSchema={validationSchema}
@@ -77,7 +73,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               style={{ borderBottomWidth: 1, marginBottom: 10 }}
             />
             {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
-
             <Text>Password</Text>
             <TextInput
               placeholder="Password"
@@ -89,7 +84,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             {touched.password && errors.password && (
               <Text style={{ color: 'red' }}>{errors.password}</Text>
             )}
-
             {isRegistering && (
               <>
                 <Text>Confirm Password</Text>
@@ -105,13 +99,11 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 )}
               </>
             )}
-
             <TouchableOpacity onPress={() => handleSubmit()} style={{ marginVertical: 10 }}>
               <Text style={{ fontSize: 16, textAlign: 'center' }}>
                 {isRegistering ? 'Register' : 'Login'}
               </Text>
             </TouchableOpacity>
-
             <TouchableOpacity onPress={() => setIsRegistering(!isRegistering)}>
               <Text style={{ textAlign: 'center', color: 'blue' }}>
                 {isRegistering ? 'Already have an account? Login' : 'New here? Register'}

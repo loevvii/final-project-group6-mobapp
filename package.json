@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "react-native-uuid": "^2.0.3",
     "yup": "^1.6.1"

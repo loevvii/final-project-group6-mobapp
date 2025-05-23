@@ -7,7 +7,6 @@ import DoctorDashboard from '../pages/doctorview/doctordashboard';
 import DoctorAppointments from '../pages/doctorview/doctorViewAppointments';
 import UserDashboard from '../pages/userview/userdashboard';
 import LoginScreen from '../pages/login';
-import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
 import UserReservationScreen from '../pages/Reservation/UserReservation';
 import UserCurrentAppointments from '../pages/userview/userCurrentAppointments';
 import UserHistory from '../pages/userview/userHistory';
@@ -26,7 +25,6 @@ const AppNavigator = () => {
           <Stack.Screen name="UserReservation" component={UserReservationScreen} options={{title: "Reservation"}} />
           <Stack.Screen name="UserCurrentAppointments" component={UserCurrentAppointments} options={{title: "Appointments"}} />
           <Stack.Screen name="UserHistory" component={UserHistory} options={{title: "History"}} />
-          <Stack.Screen name="ApproveReservation" component={ApproveReservationScreen} options={{title: "Reservation"}} />
 
 
         </Stack.Navigator>

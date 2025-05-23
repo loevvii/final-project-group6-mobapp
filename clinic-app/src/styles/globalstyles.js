@@ -1,16 +1,17 @@
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+
 export const getGlobalStyles = () =>
   StyleSheet.create({
- container: {
+    container: {
       flex: 1,
-      backgroundColor: '#E6F0FA',
+      backgroundColor: '#F5F0FA', // soft lavender background
       paddingHorizontal: 20,
       paddingTop: 20,
     },
     tabContainer: {
       flexDirection: 'row',
       marginBottom: 16,
-      backgroundColor: '#D1E5FF',
+      backgroundColor: '#E8DFF5', // pastel lavender
       borderRadius: 10,
       overflow: 'hidden',
     },
@@ -21,10 +22,10 @@ export const getGlobalStyles = () =>
     },
     tabText: {
       fontSize: 16,
-      color: '#444',
+      color: '#5A4E7C', // muted lavender
     },
     activeTab: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#9D7AC4', // dark lavender
     },
     activeTabText: {
       color: '#fff',
@@ -35,56 +36,57 @@ export const getGlobalStyles = () =>
     },
 
     buttonGroup: {
-        marginTop: 20,
-        flexDirection: 'column',
-        gap: 12,
-        paddingHorizontal: 8,
-      },
-      primaryButton: {
-        backgroundColor: '#1E60F0',
-        paddingVertical: 14,
-        borderRadius: 10,
-        alignItems: 'center',
-      },
-      secondaryButton: {
-        backgroundColor: '#4B7BE5',
-        paddingVertical: 14,
-        borderRadius: 10,
-        alignItems: 'center',
-      },
-      disabledButton: {
-        backgroundColor: '#ccc',
-        paddingVertical: 14,
-        borderRadius: 10,
-        alignItems: 'center',
-        opacity: 0.6,
-      },
-      buttonText: {
-        color: '#fff',
-        fontWeight: '600',
-        fontSize: 16,
-      },
+      marginTop: 20,
+      flexDirection: 'column',
+      gap: 12,
+      paddingHorizontal: 8,
+    },
+    primaryButton: {
+      backgroundColor: '#9D7AC4',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    secondaryButton: {
+      backgroundColor: '#BFA2DB',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    disabledButton: {
+      backgroundColor: '#ddd',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      opacity: 0.6,
+    },
+    buttonText: {
+      color: '#fff',
+      fontWeight: '600',
+      fontSize: 16,
+    },
 
     card: {
       backgroundColor: '#fff',
       borderRadius: 12,
       padding: 16,
       marginBottom: 15,
-      shadowColor: '#000',
-      shadowOpacity: 0.05,
-      shadowRadius: 4,
-      elevation: 2,
+      shadowColor: '#7E6CA6',
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+      elevation: 3,
       borderWidth: 1,
-      borderColor: '#DDD',
+      borderColor: '#D9CBE8',
     },
     name: {
       fontSize: 18,
       fontWeight: 'bold',
       marginBottom: 4,
+      color: '#5A4E7C',
     },
     detail: {
       fontSize: 14,
-      color: '#555',
+      color: '#6B5A8E',
     },
     status: {
       fontSize: 14,
@@ -92,10 +94,10 @@ export const getGlobalStyles = () =>
       marginTop: 8,
     },
     approvedStatus: {
-      color: '#228B22',
+      color: '#7B68EE', // soft indigo accent
     },
     pendingStatus: {
-      color: '#FF8C00',
+      color: '#B57EDC', // soft purple
     },
     buttonRow: {
       flexDirection: 'row',
@@ -110,44 +112,33 @@ export const getGlobalStyles = () =>
       marginHorizontal: 5,
     },
     approveButton: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#9D7AC4',
     },
     rejectButton: {
-      backgroundColor: '#FF4D4D',
-    },
-    buttonText: {
-      color: '#fff',
-      fontWeight: '600',
+      backgroundColor: '#C89EC4', // soft mauve
     },
     noReservations: {
       textAlign: 'center',
       marginTop: 50,
       fontSize: 16,
-      color: '#666',
+      color: '#777',
     },
-   safeArea:{
-      flex: 1,
-      backgroundColor: '#E6F0FA',
-      paddingHorizontal: 20,
-      paddingTop: 20,
-   },
 
-    // --- Additional Global Styles ---
     header: {
       fontSize: 22,
       fontWeight: 'bold',
-      color: '#1E60F0',
+      color: '#9D7AC4',
       marginBottom: 10,
     },
     subheader: {
       fontSize: 18,
       fontWeight: '600',
-      color: '#333',
+      color: '#5A4E7C',
       marginBottom: 8,
     },
     subtitle: {
       fontSize: 14,
-      color: '#666',
+      color: '#8D77A7',
       marginBottom: 6,
     },
     formInput: {
@@ -157,18 +148,18 @@ export const getGlobalStyles = () =>
       paddingHorizontal: 16,
       fontSize: 16,
       borderWidth: 1,
-      borderColor: '#D0D0D0',
+      borderColor: '#D9CBE8',
       marginBottom: 12,
     },
     formButton: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#9D7AC4',
       paddingVertical: 14,
       borderRadius: 10,
       alignItems: 'center',
       marginTop: 10,
     },
     confirmButton: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#7E6CA6',
       paddingVertical: 16,
       borderRadius: 12,
       alignItems: 'center',
@@ -179,41 +170,40 @@ export const getGlobalStyles = () =>
       paddingHorizontal: 14,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: '#D0D0D0',
-      backgroundColor: '#fff',  // White by default (no blue background)
+      borderColor: '#D0C6E3',
+      backgroundColor: '#fff',
       marginRight: 10,
       marginBottom: 10,
     },
     selectedSlot: {
-      backgroundColor: '#1E60F0',  // Blue only when selected
-      borderColor: '#1E60F0',
+      backgroundColor: '#9D7AC4',
+      borderColor: '#9D7AC4',
     },
     slotText: {
       fontSize: 14,
-      color: '#333',  // Dark text by default
+      color: '#5A4E7C',
     },
     selectedSlotText: {
-      color: '#fff',  // White text when selected
+      color: '#fff',
       fontWeight: '600',
     },
     disabledSlot: {
-      backgroundColor: '#f0f0f0',
-      borderColor: '#ccc',
+      backgroundColor: '#F1ECF9',
+      borderColor: '#E0D4F5',
     },
     disabledSlotText: {
       color: '#aaa',
     },
-
 
     calendarContainer: {
       backgroundColor: '#fff',
       borderRadius: 12,
       padding: 16,
       marginBottom: 16,
-      shadowColor: '#000',
-      shadowOpacity: 0.04,
-      shadowRadius: 4,
-      elevation: 2,
+      shadowColor: '#7E6CA6',
+      shadowOpacity: 0.06,
+      shadowRadius: 5,
+      elevation: 3,
     },
     calendarHeader: {
       flexDirection: 'row',
@@ -224,7 +214,7 @@ export const getGlobalStyles = () =>
     calendarHeaderText: {
       fontSize: 18,
       fontWeight: '600',
-      color: '#1E60F0',
+      color: '#9D7AC4',
     },
     weekDaysRow: {
       flexDirection: 'row',
@@ -233,7 +223,7 @@ export const getGlobalStyles = () =>
     },
     weekDay: {
       fontSize: 14,
-      color: '#888',
+      color: '#A390BF',
       textAlign: 'center',
       flex: 1,
     },
@@ -252,13 +242,13 @@ export const getGlobalStyles = () =>
     },
     dayText: {
       fontSize: 14,
-      color: '#333',
+      color: '#5A4E7C',
     },
     todayCell: {
-      backgroundColor: '#D1E5FF',
+      backgroundColor: '#E3D1F5',
     },
     selectedDayCell: {
-      backgroundColor: '#1E60F0',
+      backgroundColor: '#9D7AC4',
     },
     selectedDayText: {
       color: '#fff',
@@ -267,10 +257,6 @@ export const getGlobalStyles = () =>
     disabledDayText: {
       color: '#ccc',
     },
-
-    
-
-
   });
 
 /* mari's stuff

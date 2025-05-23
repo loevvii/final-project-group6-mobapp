@@ -10,7 +10,6 @@ import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
 import UserReservationScreen from '../pages/Reservation/UserReservation';
 import UserCurrentAppointments from '../pages/userview/userCurrentAppointments';
 import UserHistory from '../pages/userview/userHistory';
-import { useGlobalContext } from '../context/globalcontext';
 
 const Stack = createNativeStackNavigator();
 const AppNavigator = () => {

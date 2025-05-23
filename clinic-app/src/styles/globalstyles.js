@@ -229,6 +229,14 @@ export const getGlobalStyles = () =>
     disabledDayText: {
       color: '#ccc',
     },
+    disabledSlot: {
+      backgroundColor: '#f0f0f0',
+      borderColor: '#ccc',
+    },
+    disabledSlotText: {
+      color: '#aaa',
+},
+
   });
 
 /* mari's stuff

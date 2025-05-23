@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 // removed global provider cause we're gonna useGlobalContext instead but for no real reason other than "im used to it :joy:"
@@ -10,15 +10,19 @@ import ApproveReservationScreen from '../pages/Reservation/ApproveReservation';
 import UserReservationScreen from '../pages/Reservation/UserReservation';
 import UserCurrentAppointments from '../pages/userview/userCurrentAppointments';
 import UserHistory from '../pages/userview/userHistory';
-
+import { useGlobalContext } from '../context/globalcontext';
 
 const Stack = createNativeStackNavigator();
-
 const AppNavigator = () => {
+    const { addAccount } = useGlobalContext();
+      useEffect(() => {
+        addAccount("Doctor", "doctor@gmail.com", "admin123");
+      }, []);
+
     return (
         <GlobalProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="UserHome">
+                <Stack.Navigator initialRouteName="LoginScreen">
                     <Stack.Screen name="LoginScreen" component={LoginScreen} />
                     <Stack.Screen name="UserHome" component={UserDashboard} />
                     <Stack.Screen name="DoctorHome" component={DoctorDashboard} />

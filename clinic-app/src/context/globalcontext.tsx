@@ -78,15 +78,6 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         setAccounts((prev) => [...prev, newAccount]);
     };
 
-    useEffect(() => {
-        addAccount("Doctor", "doctor@gmail.com", "admin123");   // this makes a admin :3
-        /*
-        addAccount("User", "user@gmail.com", "user123");   // this makes a user for mari :3
-        const user = accounts.find((a) => (a.email === "user@gmail.com" || a.username == "user@gmail.com") && a.password === "user123");
-        login(user);
-        */
-    });
-
     const storeAccount = (account: Account) => {
         setStoredAccounts((prev) =>
             prev.some((a) => a.id === account.id) ? prev : [...prev, account]

@@ -10,27 +10,29 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const getValidationSchema = (isRegistering: boolean) =>
-    Yup.object().shape({
-      email: Yup.string()
-        .email('Invalid email format.')
-        .required('Email is empty!'),
-      password: Yup.string()
-        .min(8, 'Password must be 8-15 letters long.')
-        .max(15, 'Password must be 8-15 letters long.')
-        .required('Password is empty!'),
-      confirmPassword: isRegistering
-        ? Yup.string()
-            .oneOf([Yup.ref('password'), ''], 'Passwords do not match.')
-            .required('Please confirm your password.')
-        : Yup.string(),
-      username: isRegistering
-        ? Yup.string()
-            .required('Username is required.')
-            .min(3, 'Username must be at least 3 characters long.')
-        : Yup.string(),
-    });
+  Yup.object().shape({
+    email: isRegistering
+      ? Yup.string().email('Invalid email format.').required('Email is empty!')
+      : Yup.string(),
+    username: isRegistering
+      ? Yup.string().required('Username is required.').min(3, 'Username must be at least 3 characters long.')
+      : Yup.string(),
+    emailOrUsername: !isRegistering
+      ? Yup.string().required('Username or email is required.').min(3, 'Must be at least 3 characters.')
+      : Yup.string(),
+    password: Yup.string()
+      .min(8, 'Password must be 8-15 letters long.')
+      .max(15, 'Password must be 8-15 letters long.')
+      .required('Password is empty!'),
+    confirmPassword: isRegistering
+      ? Yup.string()
+          .oneOf([Yup.ref('password')], 'Passwords do not match.')
+          .required('Please confirm your password.')
+      : Yup.string(),
+  });
 
   const handleLogin = (emailOrUsername: string, password: string) => {
+    console.log('running');
     var redirectName = 'UserHome';
     if (emailOrUsername === "Doctor" || emailOrUsername === "doctor@gmail.com") {
       redirectName = 'DoctorHome';
@@ -49,6 +51,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleRegister = (username: string, email: string, password: string) => {
+    console.log('registering');
     if (emailExists(email)) {
       Alert.alert('Registration Failed', 'That email is already registered!');
       return;
@@ -70,11 +73,11 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {isRegistering ? 'Register' : 'Login'}
       </Text>
       <Formik
-        initialValues={{ email: '', username: '', password: '', confirmPassword: '' }}
+        initialValues={{ emailOrUsername: '', email: '', username: '', password: '', confirmPassword: '' }}
         validationSchema={getValidationSchema(isRegistering)}
         onSubmit={(values, { resetForm }) => {
-          const { email, username, password } = values;
-          isRegistering ? handleRegister(username, email, password) : handleLogin(email, password);
+          const { emailOrUsername, email, username, password } = values;
+          isRegistering ? handleRegister(username, email, password) : handleLogin(emailOrUsername, password);
           resetForm();
         }}
       >
@@ -85,13 +88,15 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 <Text>Email or Username</Text>
                 <TextInput
                   placeholder="Email or Username"
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('emailOrUsername')}
+                  value={values.emailOrUsername}
                   autoCapitalize="none"
                   style={{ borderBottomWidth: 1, marginBottom: 10 }}
                 />
-                {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
-              </>
+                {touched.emailOrUsername && errors.emailOrUsername && (
+                  <Text style={{ color: 'red' }}>{errors.emailOrUsername}</Text>
+                )}              
+                </>
             ) : (
               <>
                 <Text>Email</Text>

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { StyleSheet } from 'react-native';
 
+=======
+import { SafeAreaView, StyleSheet } from 'react-native';
+>>>>>>> ad02449601edfe50fd0b6c9c6b920812542d182b
 export const getGlobalStyles = () =>
   StyleSheet.create({
     container: {
@@ -123,6 +127,12 @@ export const getGlobalStyles = () =>
       fontSize: 16,
       color: '#777',
     },
+   safeArea:{
+      flex: 1,
+      backgroundColor: '#E6F0FA',
+      paddingHorizontal: 20,
+      paddingTop: 20,
+   },
 
     header: {
       fontSize: 22,

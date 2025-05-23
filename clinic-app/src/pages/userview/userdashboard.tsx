@@ -34,7 +34,7 @@ const UserDashboard: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.disabledButton}
+          style={styles.secondaryButton}
           onPress={() => navigation.navigate('UserHistory')}
         >
           <Text style={styles.buttonText}>View Previous Appointments</Text>

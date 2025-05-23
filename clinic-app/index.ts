@@ -1,5 +1,5 @@
 import { registerRootComponent } from 'expo';
-
+import { GlobalProvider } from './src/context/globalcontext';
 import App from './App';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);

@@ -34,6 +34,14 @@ const UserDashboard: React.FC<Props> = ({ navigation }) => {
     </>
   );
 
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate('UserHistory')}
+        >
+          <Text style={styles.buttonText}>View Previous Appointments</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   // Footer or Buttons below the list
   const ListFooter = () => (
     <View style={styles.squareButtonGroup}>

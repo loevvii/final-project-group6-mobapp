@@ -1,3 +1,10 @@
+import { SafeAreaView, StyleSheet } from 'react-native';
+export const getGlobalStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#F5F0FA', // soft lavender background
+=======
 import { StyleSheet } from 'react-native';
 
 export const getGlobalStyles = () =>
@@ -82,6 +89,15 @@ export const getGlobalStyles = () =>
     },
     primaryButton: {
       backgroundColor: '#9D7AC4',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    secondaryButton: {
+      backgroundColor: '#BFA2DB',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
       paddingVertical: 18,
       borderRadius: 10,
       alignItems: 'center',
@@ -172,6 +188,14 @@ export const getGlobalStyles = () =>
       marginTop: 50,
       fontSize: 16,
       color: '#777',
+    },
+   safeArea:{
+      flex: 1,
+      backgroundColor: '#E6F0FA',
+      paddingHorizontal: 20,
+      paddingTop: 20,
+   },
+
     },
     headerGroup: {
       flexDirection: 'row',

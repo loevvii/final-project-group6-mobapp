@@ -6,9 +6,9 @@ import { Props } from '../../navigator/props';
 
 const UserCurrentAppointments: React.FC<Props> = ({ navigation }) => {
   const { reservations, user } = useGlobalContext();
-  const [ category, setCategory ] = useState('current');
+  const [ category, setCategory ] = useState('Current Appointments');
   const styles = getGlobalStyles();
-  
+
   return (
     <View>
       <Text>

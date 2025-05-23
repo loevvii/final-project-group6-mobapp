@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  KeyboardAvoidingView,
+  SafeAreaView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CalendarPicker from '../../components/CalendarPicker';
@@ -14,6 +14,7 @@ import { getGlobalStyles } from '../../styles/globalstyles';
 
 const DoctorDashboard: React.FC = () => {
   const styles = getGlobalStyles();
+
   const [selectedDate, setSelectedDate] = useState('');
   const [patientName, setPatientName] = useState('');
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -35,26 +36,22 @@ const DoctorDashboard: React.FC = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.header}>Doctor Dashboard</Text>
+        <Text style={styles.header}>Book an Appointment</Text>
 
-        <Text style={styles.subheader}>Select Date:</Text>
+        <Text style={styles.subheader}>Select Date</Text>
         <CalendarPicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
 
-        <Text style={styles.subheader}>Patient Name:</Text>
+        <Text style={styles.subheader}>Patient Name</Text>
         <TextInput
-          style={styles.formInput}
           placeholder="Enter patient name"
-          placeholderTextColor="#888"
           value={patientName}
           onChangeText={setPatientName}
+          style={styles.formInput}
         />
 
-        <TouchableOpacity
-          style={[styles.formButton, { marginBottom: 12 }]}
-          onPress={() => setShowTimePicker(true)}
-        >
+        <TouchableOpacity style={styles.formButton} onPress={() => setShowTimePicker(true)}>
           <Text style={styles.buttonText}>Select Time: {time.toLocaleTimeString()}</Text>
         </TouchableOpacity>
 
@@ -68,14 +65,11 @@ const DoctorDashboard: React.FC = () => {
           />
         )}
 
-        <TouchableOpacity
-          style={[styles.formButton, styles.confirmButton]}
-          onPress={onSubmit}
-        >
+        <TouchableOpacity style={styles.confirmButton} onPress={onSubmit}>
           <Text style={styles.buttonText}>Book Appointment</Text>
         </TouchableOpacity>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

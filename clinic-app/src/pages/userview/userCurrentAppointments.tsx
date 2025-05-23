@@ -16,24 +16,24 @@ const UserCurrentAppointments: React.FC<Props> = ({ navigation }) => {
   return (
     <View>
       <TouchableOpacity onPress={() => setCategory('pending')}>
-                      Pending
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setCategory('approved')}>
-                      Approved
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setCategory('rejected')}>
-                      Rejected
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setCategory('cancelled')}>
-                      Cancelled
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setCategory('completed')}>
-                      Completed
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setCategory('missed')}>
-                      Missed
-                  </TouchableOpacity>
-                  <Text>{capitalize(category)} Appointments</Text>
+        <Text> Pending </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCategory('approved')}>
+        <Text>Approved</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCategory('rejected')}>
+        <Text>Rejected</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCategory('cancelled')}>
+        <Text>Cancelled</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCategory('completed')}>
+        <Text>Completed</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setCategory('missed')}>
+        <Text>Missed</Text>
+      </TouchableOpacity>
+      <Text>{capitalize(category)} Appointments</Text>
 
       <FlatList
         data={reservations.filter(r => r.accId === user!.id && r.status === category)}

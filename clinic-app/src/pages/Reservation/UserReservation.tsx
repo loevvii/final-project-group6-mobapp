@@ -70,8 +70,7 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>Booking for {routeDate}</Text>
         <Text style={styles.subheader}>Patient Information</Text>
 
@@ -150,7 +149,6 @@ const UserReservation: React.FC<Props> = ({ route, navigation }) => {
           <Text style={styles.buttonText}>Confirm Appointment</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
   );
 };
 
